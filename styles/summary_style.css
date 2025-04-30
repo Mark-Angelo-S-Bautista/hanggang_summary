@@ -1,0 +1,119 @@
+/* summary_style.css */
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url("../img/bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.top-bar {
+    padding: 10px 20px;
+}
+
+
+.container {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  margin: 90px auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  width: 50%;
+}
+
+h1 {
+  font-family: "Great Vibes", cursive;
+  color: #ff5b5b;
+  font-size: 80px;
+  text-align: center;
+  margin-top: 0px;
+}
+
+.summary-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #f35b53;
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+
+.summary-card h2 {
+  color: #f35b53;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.summary-card p {
+  font-size: 16px;
+  color: #333;
+}
+
+.content-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.summary-left, .reminders-right {
+  flex: 1;
+  min-width: 300px;
+}
+
+.sched-box {
+  background-color: #f7cfcf;
+  padding: 20px;
+  border-radius: 10px;
+  padding-top: 3px;
+}
+
+.sched{
+    text-align: center;
+    font-size: 20px;
+}
+
+.reminder{
+    color: #ff5b5b;
+}
+
+.btn-home {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    border: 2px solid #ff5b5b;
+    background-color: transparent;
+    color: #ff5b5b;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.btn-home:hover {
+    background-color: #ff5b5b;
+    color: white;
+}
