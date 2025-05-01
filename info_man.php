@@ -166,15 +166,12 @@ $result = $conn->query($sql);
             echo "<td>$gender</td>";
             echo "<td>$status</td>";
             echo "<td>
-                    <a href='#' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
-                    <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
-                  </td>";
+                <a href='#' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
+                <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
+              </td>";
             echo "</tr>";
         }
-    } else {
-        echo "<tr><td colspan='11'>No records found</td></tr>";
     }
-    $conn->close();
     ?>
 </table>
 
@@ -238,10 +235,11 @@ $result = $conn->query($sql);
 </div>
 
 <script>
+
 function openEditModal(id, selected_date, selected_time, stylist, selected_service, username, email, phoneNum, gender, status) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_selected_date').value = selected_date;
-    document.getElementById('edit_selected_time').value = selected_time;
+    document.getElementById('edit_selected_time').value = selected_time.substring(0, 5); // <-- FIXED HERE
     document.getElementById('edit_stylist').value = stylist;
     document.getElementById('edit_selected_service').value = selected_service;
     document.getElementById('edit_username').value = username;
@@ -254,11 +252,12 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
     document.getElementById('modalOverlay').style.display = 'block';
 }
 
+
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
     document.getElementById('modalOverlay').style.display = 'none';
 }
 </script>
-
+<p>hello</p>
 </body>
 </html>
