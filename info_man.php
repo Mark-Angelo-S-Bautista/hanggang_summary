@@ -145,7 +145,8 @@ $result = $conn->query($sql);
         while ($row = $result->fetch_assoc()) {
             $id = htmlspecialchars($row["id"]);
             $selected_date = htmlspecialchars($row["selected_date"]);
-            $selected_time = htmlspecialchars($row["selected_time"]);
+            $raw_time = $row["selected_time"];
+            $selected_time = date("h:i A", strtotime($raw_time)); // Format as hh:mm AM/PM
             $stylist = htmlspecialchars($row["stylist"]);
             $selected_service = htmlspecialchars($row["selected_service"]);
             $username = htmlspecialchars($row["username"]);
@@ -189,8 +190,18 @@ $result = $conn->query($sql);
         </p>
         <p>
             <label>Selected Time:</label><br>
-            <input type="time" name="edit_selected_time" id="edit_selected_time">
+            <select name="edit_selected_time" id="edit_selected_time">
+                <option value="09:00 AM">9:00 AM</option>
+                <option value="10:00 AM">10:00 AM</option>
+                <option value="11:00 AM">11:00 AM</option>
+                <option value="01:00 PM">1:00 PM</option>
+                <option value="02:00 PM">2:00 PM</option>
+                <option value="03:00 PM">3:00 PM</option>
+                <option value="04:00 PM">4:00 PM</option>
+                <option value="05:00 PM">5:00 PM</option>
+            </select>
         </p>
+
         <p>
             <label>Stylist:</label><br>
             <input type="text" name="edit_stylist" id="edit_stylist">
@@ -216,11 +227,13 @@ $result = $conn->query($sql);
             <select name="edit_gender" id="edit_gender">
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
+                <option value="Prefer not to say">Prefer not to say</option>
             </select>
         </p>
         <p>
             <label>Status:</label><br>
             <select name="edit_status" id="edit_status">
+                <option value="Scheduled">Scheduled</option>
                 <option value="In Session">In Session</option>
                 <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
@@ -239,19 +252,38 @@ $result = $conn->query($sql);
 function openEditModal(id, selected_date, selected_time, stylist, selected_service, username, email, phoneNum, gender, status) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_selected_date').value = selected_date;
-    document.getElementById('edit_selected_time').value = selected_time.substring(0, 5); // <-- FIXED HERE
+    document.getElementById('edit_selected_time').value = selected_time;
     document.getElementById('edit_stylist').value = stylist;
     document.getElementById('edit_selected_service').value = selected_service;
     document.getElementById('edit_username').value = username;
     document.getElementById('edit_email').value = email;
     document.getElementById('edit_phoneNum').value = phoneNum;
-    document.getElementById('edit_gender').value = gender;
-    document.getElementById('edit_status').value = status;
+
+    // Set the selected option for gender
+    const genderSelect = document.getElementById('edit_gender');
+    for (let i = 0; i < genderSelect.options.length; i++) {
+        if (genderSelect.options[i].value.toLowerCase() === gender.toLowerCase()) {
+            genderSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    // Set the selected option for status
+    // Only set status if it's not "Scheduled"
+    if (status && status.trim().toLowerCase() !== "scheduled") {
+        for (let i = 0; i < statusSelect.options.length; i++) {
+            if (statusSelect.options[i].value.toLowerCase() === status.trim().toLowerCase()) {
+                statusSelect.selectedIndex = i;
+                break;
+            }
+        }
+    }
+// If status is "Scheduled", don't change the dropdown (it stays on first option or previously selected)
+
 
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
 }
-
 
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
