@@ -1,4 +1,4 @@
-test test 1233
+Eto yung test
 Eto yung table para ma try nyo sa pc nyo
 
 CREATE TABLE `form_info` (
