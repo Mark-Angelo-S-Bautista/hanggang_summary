@@ -111,6 +111,8 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Form Info Table</title>
+    <link rel="stylesheet" href="styles/info_man.css">
+
     <style>
         table, th, td {
             border: 1px solid black;
@@ -139,11 +141,11 @@ $result = $stmt->get_result();
 </head>
 <body>
 
-<div style="display: flex; justify-content: space-between; align-items: flex-start;">
-    <h2 style="margin: 0;">Form Info Table</h2>
-    <div style="text-align: right;">
-        <div id="currentDate" style="font-weight: bold;"></div>
-        <div id="currentDayTime" style="font-size: 0.9em;"></div>
+<div class="header-wrapper">
+    <h2>Appointments for Today</h2>
+    <div class="date-time">
+        <div id="currentDate" class="date"></div>
+        <div id="currentDayTime" class="weekday-time"></div>
     </div>
 </div>
 
@@ -188,10 +190,15 @@ $result = $stmt->get_result();
             echo "<td>$email</td>";
             echo "<td>$phoneNum</td>";
             echo "<td>$gender</td>";
-            echo "<td>$status</td>";
+            if (strtolower($status) === 'in session') {
+                echo "<td><span class='status-in-session'>$status</span></td>";
+            } else {
+                echo "<td>$status</td>";
+            }
+            
             echo "<td>
-                <a href='#' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
-                <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
+                <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
+                <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
               </td>";
             echo "</tr>";
         }

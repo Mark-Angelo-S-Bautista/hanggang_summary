@@ -1,0 +1,88 @@
+body {
+    font-family: "Segoe UI", sans-serif
+    background-color: #f0f0f0; 
+    padding: 0%;
+}
+
+.header-wrapper {
+    background-color: #f0e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.header-wrapper h2 {
+    margin: 0;
+}
+
+.date-time {
+    text-align: right;
+    font-size: 20px;
+}
+
+.date-time .date {
+    font-weight: bold;
+}
+
+.date-time .weekday-time {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.header-wrapper h2 {
+    font-size: 30px;
+}
+
+table {
+    margin: 20px auto; /* centers the table horizontally */
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #FFB3B399;
+}
+
+.edit-btn {
+    border: 2px solid #ff5b5b;
+    background-color: transparent;
+    color: #ff5b5b;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.edit-btn:hover {
+    background-color: #ff5b5b;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #ff5b5b;
+    color: black;
+    border: none;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.delete-btn:hover {
+    opacity: 0.8;
+}
+
+.status-in-session {
+    background-color: #4CAF50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+}
