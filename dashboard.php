@@ -16,6 +16,7 @@ if (!isset($_SESSION['admin_id'])) {
   <h1>Welcome to the Admin Dashboard!</h1>
   <p><a href="logout.php">Logout</a></p>
   <p><a href="info_man.php">Information Management</a></p>
+  <p><a href="reports.php">Reports</a></p>
 </body>
 </html>
 
