@@ -51,10 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $edit_gender, 
                         $edit_status, 
                         $edit_id);
-        if ($stmt->execute()) {
-            echo "<script>alert('Record updated successfully.'); window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
-        }
-        $stmt->close();
+                        if ($stmt->execute()) {
+                            header("Location: " . $_SERVER['PHP_SELF']);
+                            exit();
+                        }
+                        $stmt->close();
+                        
 
     } elseif (isset($_POST['delete'])) {
         // Delete query
