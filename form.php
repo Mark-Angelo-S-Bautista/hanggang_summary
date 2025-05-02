@@ -96,19 +96,25 @@ require "config.session.php";
             </div>
             <!-- New User Inputs -->
             <div class="user-info">
-                <h3>User Information</h3>
-                <div class="user-inputs">
-                    <input type="text" name="username" placeholder="Full Name">
-                    <input type="email" name="email" placeholder="Email Address">
-                    <input type="tel" name="phoneNum" placeholder="Phone Number">
-                    <select name="gender">
-                        <option value="" disabled selected>Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Prefer not to say">Prefer not to say</option>
-                    </select>
-                </div>
-            </div>
+    <h3>User Information</h3>
+    <div class="user-inputs">
+        <input type="text" name="username" placeholder="Full Name" required>
+
+        <!-- Valid email input -->
+        <input type="email" name="email" placeholder="Email Address" required>
+
+        <!-- Phone must be exactly 11 digits -->
+        <input type="tel" name="phoneNum" placeholder="Phone Number" pattern="\d{11}" maxlength="11" title="Phone number must be exactly 11 digits" required>
+
+        <select name="gender" required>
+            <option value="" disabled selected>Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+        </select>
+    </div>
+</div>
+
             <div class="book-button">
                 <button type="submit">Book Appointment</button>
             </div>
@@ -118,5 +124,28 @@ require "config.session.php";
             </div>
         </div>
     </form>
+    <script>
+document.querySelector("form").addEventListener("submit", function(e) {
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const phone = document.querySelector('input[name="phoneNum"]').value.trim();
+
+    // Strict email pattern: something@something.something (e.g., user@gmail.com)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    // Phone: exactly 11 digits
+    const phoneRegex = /^\d{11}$/;
+
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address (e.g., user@gmail.com).");
+        e.preventDefault();
+    }
+
+    if (!phoneRegex.test(phone)) {
+        alert("Phone number must be exactly 11 digits.");
+        e.preventDefault();
+    }
+});
+</script>
+
 </body>
 </html>
