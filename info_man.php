@@ -1,22 +1,16 @@
 <?php
-// error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// Connect to the database
 $conn = new mysqli("localhost", "root", "", "armansalon");
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle Update or Delete
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $edit_id = $_POST['edit_id'];
 
     if (isset($_POST['update'])) {
-        // Collect all the updated data
         $edit_username = $_POST['edit_username'];
         $edit_selected_date = $_POST['edit_selected_date'];
         $edit_selected_time = $_POST['edit_selected_time'];
@@ -27,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $edit_gender = $_POST['edit_gender'];
         $edit_status = $_POST['edit_status'];
 
-        // Update query
         $updateSql = "UPDATE form_info SET 
                         username = ?, 
                         selected_date = ?, 
@@ -51,15 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $edit_gender, 
                         $edit_status, 
                         $edit_id);
-                        if ($stmt->execute()) {
-                            header("Location: " . $_SERVER['PHP_SELF']);
-                            exit();
-                        }
-                        $stmt->close();
-                        
-
+        if ($stmt->execute()) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+        $stmt->close();
     } elseif (isset($_POST['delete'])) {
-        // Delete query
         $deleteSql = "DELETE FROM form_info WHERE id = ?";
         $stmt = $conn->prepare($deleteSql);
         $stmt->bind_param("i", $edit_id);
@@ -70,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Delete via GET request
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "DELETE FROM form_info WHERE id = ?";
@@ -87,9 +76,34 @@ if (isset($_GET['id'])) {
     }
 }
 
-// Fetch records
-$sql = "SELECT * FROM form_info";
-$result = $conn->query($sql);
+date_default_timezone_set('Asia/Manila');
+$today = date('Y-m-d');
+$now = new DateTime();
+
+$sql = "SELECT * FROM form_info WHERE selected_date = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $today);
+$stmt->execute();
+$result = $stmt->get_result();
+
+while ($row = $result->fetch_assoc()) {
+    $appointmentId = $row['id'];
+    $appointmentTime = new DateTime($row['selected_date'] . ' ' . $row['selected_time']);
+    $appointmentTime->modify('+10 minutes');
+
+    $status = $row['status'];
+    if ($status !== 'Cancelled' && $status !== 'Completed' && $now > $appointmentTime) {
+        $updateStmt = $conn->prepare("UPDATE form_info SET status = 'Cancelled' WHERE id = ?");
+        $updateStmt->bind_param("i", $appointmentId);
+        $updateStmt->execute();
+        $updateStmt->close();
+    }
+}
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $today);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +139,14 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-<h2>Form Info Table</h2>
+<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <h2 style="margin: 0;">Form Info Table</h2>
+    <div style="text-align: right;">
+        <div id="currentDate" style="font-weight: bold;"></div>
+        <div id="currentDayTime" style="font-size: 0.9em;"></div>
+    </div>
+</div>
+
 
 <table>
     <tr>
@@ -148,7 +169,7 @@ $result = $conn->query($sql);
             $id = htmlspecialchars($row["id"]);
             $selected_date = htmlspecialchars($row["selected_date"]);
             $raw_time = $row["selected_time"];
-            $selected_time = date("h:i A", strtotime($raw_time)); // Format as hh:mm AM/PM
+            $selected_time = date("h:i A", strtotime($raw_time));
             $stylist = htmlspecialchars($row["stylist"]);
             $selected_service = htmlspecialchars($row["selected_service"]);
             $username = htmlspecialchars($row["username"]);
@@ -186,12 +207,8 @@ $result = $conn->query($sql);
     <h3>Edit Appointment</h3>
     <form id="editForm" method="POST" action="">
         <input type="hidden" name="edit_id" id="edit_id">
-        <p>
-            <label>Selected Date:</label><br>
-            <input type="date" name="edit_selected_date" id="edit_selected_date">
-        </p>
-        <p>
-            <label>Selected Time:</label><br>
+        <p><label>Selected Date:</label><br><input type="date" name="edit_selected_date" id="edit_selected_date"></p>
+        <p><label>Selected Time:</label><br>
             <select name="edit_selected_time" id="edit_selected_time">
                 <option value="09:00 AM">9:00 AM</option>
                 <option value="10:00 AM">10:00 AM</option>
@@ -203,27 +220,11 @@ $result = $conn->query($sql);
                 <option value="05:00 PM">5:00 PM</option>
             </select>
         </p>
-
-        <p>
-            <label>Stylist:</label><br>
-            <input type="text" name="edit_stylist" id="edit_stylist">
-        </p>
-        <p>
-            <label>Selected Service:</label><br>
-            <input type="text" name="edit_selected_service" id="edit_selected_service">
-        </p>
-        <p>
-            <label>Username:</label><br>
-            <input type="text" name="edit_username" id="edit_username">
-        </p>
-        <p>
-            <label>Email:</label><br>
-            <input type="email" name="edit_email" id="edit_email">
-        </p>
-        <p>
-            <label>Phone Number:</label><br>
-            <input type="tel" name="edit_phoneNum" id="edit_phoneNum">
-        </p>
+        <p><label>Stylist:</label><br><input type="text" name="edit_stylist" id="edit_stylist"></p>
+        <p><label>Selected Service:</label><br><input type="text" name="edit_selected_service" id="edit_selected_service"></p>
+        <p><label>Username:</label><br><input type="text" name="edit_username" id="edit_username"></p>
+        <p><label>Email:</label><br><input type="email" name="edit_email" id="edit_email"></p>
+        <p><label>Phone Number:</label><br><input type="tel" name="edit_phoneNum" id="edit_phoneNum"></p>
         <p>
             <label>Gender:</label><br>
             <select name="edit_gender" id="edit_gender">
@@ -250,7 +251,6 @@ $result = $conn->query($sql);
 </div>
 
 <script>
-
 function openEditModal(id, selected_date, selected_time, stylist, selected_service, username, email, phoneNum, gender, status) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_selected_date').value = selected_date;
@@ -261,7 +261,6 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
     document.getElementById('edit_email').value = email;
     document.getElementById('edit_phoneNum').value = phoneNum;
 
-    // Set the selected option for gender
     const genderSelect = document.getElementById('edit_gender');
     for (let i = 0; i < genderSelect.options.length; i++) {
         if (genderSelect.options[i].value.toLowerCase() === gender.toLowerCase()) {
@@ -270,18 +269,13 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
         }
     }
 
-    // Set the selected option for status
-    // Only set status if it's not "Scheduled"
-    if (status && status.trim().toLowerCase() !== "scheduled") {
-        for (let i = 0; i < statusSelect.options.length; i++) {
-            if (statusSelect.options[i].value.toLowerCase() === status.trim().toLowerCase()) {
-                statusSelect.selectedIndex = i;
-                break;
-            }
+    const statusSelect = document.getElementById('edit_status');
+    for (let i = 0; i < statusSelect.options.length; i++) {
+        if (statusSelect.options[i].value.toLowerCase() === status.trim().toLowerCase()) {
+            statusSelect.selectedIndex = i;
+            break;
         }
     }
-// If status is "Scheduled", don't change the dropdown (it stays on first option or previously selected)
-
 
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
@@ -291,7 +285,31 @@ function closeModal() {
     document.getElementById('editModal').style.display = 'none';
     document.getElementById('modalOverlay').style.display = 'none';
 }
+
+function formatDateTime() {
+    const now = new Date();
+
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const optionsDay = { weekday: 'long' };
+    
+    const date = now.toLocaleDateString('en-US', optionsDate);
+    const day = now.toLocaleDateString('en-US', optionsDay);
+    
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    const time = `${hours}:${minutes} ${ampm}`;
+
+    document.getElementById('currentDate').innerText = date;
+    document.getElementById('currentDayTime').innerText = `${day} | ${time}`;
+}
+
+formatDateTime();
+setInterval(formatDateTime, 60000); // update every minute
 </script>
-<p>hello</p>
+
 </body>
 </html>
