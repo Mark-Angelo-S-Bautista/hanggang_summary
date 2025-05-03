@@ -147,6 +147,74 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="styles/info_man.css">
 
     <style>
+        .header-wrapper {
+        margin-top: 80px; /* Add space to account for the fixed header-background */
+        text-align: center;
+        padding: 20px;
+        }
+
+        .header-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%; /* Extend the background to the full width of the page */
+        height: 80px; /* Match the height of the header */
+        background-color: #f35b53;
+        z-index: 1000; /* Place the background behind the header content */
+        }
+
+        .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #f35b53;
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%; /* Keep the content width */
+        max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
+        margin: 0 auto; /* Center the content horizontally */
+        position: relative; /* Keep the content positioned relative to the header */
+        z-index: 1001; /* Ensure the header content stays above the background */
+        }
+
+        .header-logo img {
+        height: 50px;
+        width: auto;
+        }
+
+        .header-title {
+        font-size: 24px;
+        font-weight: bold;
+        font-family: "Segoe UI", sans-serif;
+        text-align: center;
+        flex-grow: 1; /* Push the title to the center */
+        }
+
+        .header-buttons {
+        display: flex;
+        gap: 15px;
+        }
+
+        .header-button {
+        padding: 10px 15px;
+        background-color: white;
+        color: #f35b53;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        }
+
+        .header-button:hover {
+        background-color: #e35b53;
+        color: white;
+        }
+
+        .header-button.active {
+        background-color: #e35b53;
+        color: white;
+        }
         table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
@@ -173,7 +241,23 @@ $result = $stmt->get_result();
     </style>
 </head>
 <body>
-
+    <div class="header-background">
+        <div class="header">
+            <div class="header-logo">
+                <img src="img/logo.png" alt="Arman Salon Logo">
+            </div>
+            <div class="header-title">
+                Arman Salon
+            </div>
+            <div class="header-buttons">
+                <a href="dashboard.php" class="header-button">Dashboard</a>
+                <a href="info_man.php" class="header-button active">Information Management</a>
+                <a href="reports.php" class="header-button">Reports</a>
+                <a href="settings.php" class="header-button">Settings</a>
+                <a href="logout.php" class="header-button">Logout</a>
+            </div>
+        </div>
+    </div>
 <div class="header-wrapper">
     <h2>Appointments for Today</h2>
     <div class="date-time">

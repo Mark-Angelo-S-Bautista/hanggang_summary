@@ -11,19 +11,19 @@ if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 $today = date('Y-m-d');
 
 // Total Appointments Today
-$apptResult = $conn->query("SELECT COUNT(*) AS total FROM appointments WHERE DATE(appointment_date) = '$today'");
+$apptResult = $conn->query("SELECT COUNT(*) AS total FROM form_info WHERE DATE(selected_date) = '$today'");
 $totalAppointments = $apptResult->fetch_assoc()['total'];
 
 // Total Customers Today
-$customerResult = $conn->query("SELECT COUNT(DISTINCT customer_id) AS total FROM appointments WHERE DATE(appointment_date) = '$today'");
+$customerResult = $conn->query("SELECT COUNT(DISTINCT id) AS total FROM form_info WHERE DATE(selected_date) = '$today'");
 $totalCustomers = $customerResult->fetch_assoc()['total'];
 
 // Appointments Today Only
 $upcomingResult = $conn->query("
-  SELECT customer_name, appointment_date, time 
-  FROM appointments 
-  WHERE appointment_date = '$today' 
-  ORDER BY time
+  SELECT username, selected_date, selected_time 
+  FROM form_info 
+  WHERE selected_date = '$today' 
+  ORDER BY selected_time
 ");
 ?>
 <!DOCTYPE html>
@@ -202,10 +202,10 @@ $upcomingResult = $conn->query("
     <div class="sidebar">
       <div>
         <h2>Arman Salon</h2>
-        <a href="admin_dashboard.php">Dashboard</a>
-        <a href="admin_information.php">Information Management</a>
-        <a href="admin_reports.php">Reports</a>
-        <a href="admin_settings.php">Settings</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="info_man.php">Information Management</a>
+        <a href="reports.php">Reports</a>
+        <a href="settings.php">Settings</a>
       </div>
       <div class="logout-link">
         <a href="logout.php">Logout</a>
@@ -236,9 +236,9 @@ $upcomingResult = $conn->query("
           </tr>
           <?php while($row = $upcomingResult->fetch_assoc()): ?>
             <tr>
-              <td><?php echo htmlspecialchars($row['customer_name']); ?></td>
-              <td><?php echo htmlspecialchars($row['appointment_date']); ?></td>
-              <td><?php echo htmlspecialchars($row['time']); ?></td>
+              <td><?php echo htmlspecialchars($row['username']); ?></td>
+              <td><?php echo htmlspecialchars($row['selected_date']); ?></td>
+              <td><?php echo htmlspecialchars($row['selected_time']); ?></td>
             </tr>
           <?php endwhile; ?>
         </table>

@@ -90,8 +90,22 @@ try {
     <link rel="stylesheet" href="styles/reports_styles.css">
 </head>
 <body>
-    <div class="header">
-        Report
+    <div class="header-background">
+        <div class="header">
+            <div class="header-logo">
+                <img src="img/logo.png" alt="Arman Salon Logo">
+            </div>
+            <div class="header-title">
+                Arman Salon
+            </div>
+            <div class="header-buttons">
+                <a href="dashboard.php" class="header-button">Dashboard</a>
+                <a href="info_man.php" class="header-button">Information Management</a>
+                <a href="reports.php" class="header-button active">Reports</a>
+                <a href="settings.php" class="header-button">Settings</a>
+                <a href="logout.php" class="header-button">Logout</a>
+            </div>
+        </div>
     </div>
     <div class="search-container">
         <form method="GET" action="" style="display: flex; align-items: center;">

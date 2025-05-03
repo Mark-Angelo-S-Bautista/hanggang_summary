@@ -11,15 +11,66 @@ body {
   /* Removed height and overflow restrictions */
 }
 .header {
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
   background-color: #f35b53;
-  color: #fff;
-  text-align: center;
-  padding: 20px 0;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Keep the content width */
+  max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
+  margin: 0 auto; /* Center the content horizontally */
+  position: relative; /* Keep the content positioned relative to the header */
+  z-index: 1001; /* Ensure the header content stays above the background */
+}
+
+.header-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Extend the background to the full width of the page */
+  height: 80px; /* Match the height of the header */
+  background-color: #f35b53;
+  z-index: 1000; /* Place the background behind the header content */
+}
+
+.header-logo img {
+  height: 50px;
+  width: auto;
+}
+
+.header-title {
   font-size: 24px;
   font-weight: bold;
   font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex-grow: 1; /* Push the title to the center */
+}
+
+.header-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.header-button {
+  padding: 10px 15px;
+  background-color: white;
+  color: #f35b53;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.header-button:hover {
+  background-color: #e35b53;
+  color: white;
+}
+
+.header-button.active {
+  background-color: #e35b53;
+  color: white;
 }
 .search-container {
   margin: 10px 0;
@@ -51,13 +102,13 @@ body {
   background-color: #e35b53;
 }
 .content-container {
+  margin-top: 80px; /* Add space to account for the fixed header */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: calc(100% - 60px); /* Adjust height to fit within the page */
-  width: 90%;
-  max-width: 1200px;
+  width: 90%; /* Match the table's width */
+  max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
 }
 .table-container {
   width: 100%;
