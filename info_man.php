@@ -21,6 +21,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $edit_gender = $_POST['edit_gender'];
         $edit_status = $_POST['edit_status'];
 
+        // Fetch the current selected_date and selected_time from the database
+$fetchSql = "SELECT selected_date, selected_time, status FROM form_info WHERE id = ?";
+$fetchStmt = $conn->prepare($fetchSql);
+$fetchStmt->bind_param("i", $edit_id);
+$fetchStmt->execute();
+$fetchResult = $fetchStmt->get_result();
+$currentData = $fetchResult->fetch_assoc();
+$fetchStmt->close();
+
+$current_date = $currentData['selected_date'];
+$current_time = $currentData['selected_time'];
+$current_status = $currentData['status'];
+
+// Convert new date and time to DateTime
+date_default_timezone_set('Asia/Manila');
+$combinedDateTime = new DateTime($edit_selected_date . ' ' . $edit_selected_time);
+$currentDateTime = new DateTime();
+
+// Reset status to "Scheduled" only if date/time changed, status wasn't manually changed, and new time is in the future
+if (
+    ($edit_selected_date !== $current_date || $edit_selected_time !== $current_time) &&
+    $edit_status === $current_status &&
+    $combinedDateTime > $currentDateTime
+) {
+    $edit_status = "Scheduled";
+}
+
+// Allow admin override from Cancelled to In Session
+if ($current_status === "Cancelled" && $edit_status === "In Session") {
+    $edit_status = "In Session";
+}
+
+
         $updateSql = "UPDATE form_info SET 
                         username = ?, 
                         selected_date = ?, 
@@ -89,7 +122,7 @@ $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) {
     $appointmentId = $row['id'];
     $appointmentTime = new DateTime($row['selected_date'] . ' ' . $row['selected_time']);
-    $appointmentTime->modify('+10 minutes');
+    $appointmentTime->modify('+15 minutes');
 
     $status = $row['status'];
     if ($status !== 'Cancelled' && $status !== 'Completed' && $now > $appointmentTime) {
