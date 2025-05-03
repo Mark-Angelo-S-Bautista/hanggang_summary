@@ -1,4 +1,13 @@
-<!-- admin_login.php -->
+<?php
+session_start();
+$accountCreated = false;
+
+if (isset($_SESSION['account_created'])) {
+    $accountCreated = true;
+    unset($_SESSION['account_created']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,6 +67,18 @@
       background-color: #CC3A3A;
     }
 
+    .success-msg {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .error-msg {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
     p {
       margin-top: 20px;
     }
@@ -69,13 +90,19 @@
   </style>
 </head>
 <body>
+
 <form class="form-container" action="process_login.php" method="POST">
   <h1>Arman Salon</h1>
   <p>Admin Login</p>
 
-  <!-- Add success or error message here -->
+  <!-- Success message (only after registration) -->
+  <?php if ($accountCreated): ?>
+    <p class="success-msg">Account successfully created!</p>
+  <?php endif; ?>
+
+  <!-- Error message (optional) -->
   <?php if (isset($_GET['error'])): ?>
-    <p style="color: red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
+    <p class="error-msg"><?php echo htmlspecialchars($_GET['error']); ?></p>
   <?php endif; ?>
 
   <input type="text" name="username" placeholder="Username" required>
@@ -83,6 +110,14 @@
   <button type="submit">Login</button>
   <p>No account yet? <a href="admin_register.php">Create one</a></p>
 </form>
+
+<!-- Optional: Auto-hide success message -->
+<script>
+  setTimeout(() => {
+    const msg = document.querySelector('.success-msg');
+    if (msg) msg.style.display = 'none';
+  }, 3000);
+</script>
 
 </body>
 </html>
