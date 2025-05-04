@@ -145,183 +145,89 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Form Info Table</title>
     <link rel="stylesheet" href="styles/info_man.css">
-
-    <style>
-        .header-wrapper {
-        margin-top: 80px; /* Add space to account for the fixed header-background */
-        text-align: center;
-        padding: 20px;
-        }
-
-        .header-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%; /* Extend the background to the full width of the page */
-        height: 80px; /* Match the height of the header */
-        background-color: #f35b53;
-        z-index: 1000; /* Place the background behind the header content */
-        }
-
-        .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        background-color: #f35b53;
-        color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 90%; /* Keep the content width */
-        max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
-        margin: 0 auto; /* Center the content horizontally */
-        position: relative; /* Keep the content positioned relative to the header */
-        z-index: 1001; /* Ensure the header content stays above the background */
-        }
-
-        .header-logo img {
-        height: 50px;
-        width: auto;
-        }
-
-        .header-title {
-        font-size: 24px;
-        font-weight: bold;
-        font-family: "Segoe UI", sans-serif;
-        text-align: center;
-        flex-grow: 1; /* Push the title to the center */
-        }
-
-        .header-buttons {
-        display: flex;
-        gap: 15px;
-        }
-
-        .header-button {
-        padding: 10px 15px;
-        background-color: white;
-        color: #f35b53;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-        }
-
-        .header-button:hover {
-        background-color: #e35b53;
-        color: white;
-        }
-
-        .header-button.active {
-        background-color: #e35b53;
-        color: white;
-        }
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 8px;
-        }
-        #editModal {
-            display: none;
-            position: fixed;
-            top: 20%;
-            left: 30%;
-            background: #fff;
-            border: 1px solid #000;
-            padding: 20px;
-            z-index: 1000;
-        }
-        #modalOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-    </style>
 </head>
 <body>
-    <div class="header-background">
-        <div class="header">
-            <div class="header-logo">
-                <img src="img/logo.png" alt="Arman Salon Logo">
-            </div>
-            <div class="header-title">
-                Arman Salon
-            </div>
-            <div class="header-buttons">
-                <a href="dashboard.php" class="header-button">Dashboard</a>
-                <a href="info_man.php" class="header-button active">Information Management</a>
-                <a href="reports.php" class="header-button">Reports</a>
-                <a href="settings.php" class="header-button">Settings</a>
-                <a href="logout.php" class="header-button">Logout</a>
-            </div>
+
+<div class="container">
+    <div class="sidebar">
+        <div>
+            <h2>Arman Salon</h2>
+            <a href="dashboard.php">Dashboard</a>
+            <a href="info_man.php">Information Management</a>
+            <a href="reports.php">Reports</a>
+            <a href="settings.php">Settings</a>
+        </div>
+        <div class="logout-link">
+            <a href="logout.php">Logout</a>
         </div>
     </div>
-<div class="header-wrapper">
-    <h2>Appointments for Today</h2>
-    <div class="date-time">
-        <div id="currentDate" class="date"></div>
-        <div id="currentDayTime" class="weekday-time"></div>
+
+    <div class="main-content">
+        <div class="header-wrapper">
+            <h2>Appointments for Today</h2>
+            <div class="date-time">
+                <div id="currentDate" class="date"></div>
+                <div id="currentDayTime" class="weekday-time"></div>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Selected Date</th>
+                <th>Selected Time</th>
+                <th>Stylist</th>
+                <th>Selected Service</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Gender</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $id = htmlspecialchars($row["id"]);
+                    $selected_date = htmlspecialchars($row["selected_date"]);
+                    $raw_time = $row["selected_time"];
+                    $selected_time = date("h:i A", strtotime($raw_time));
+                    $stylist = htmlspecialchars($row["stylist"]);
+                    $selected_service = htmlspecialchars($row["selected_service"]);
+                    $username = htmlspecialchars($row["username"]);
+                    $email = htmlspecialchars($row["email"]);
+                    $phoneNum = htmlspecialchars($row["phoneNum"]);
+                    $gender = htmlspecialchars($row["gender"]);
+                    $status = htmlspecialchars($row["status"]);
+
+                    echo "<tr>";
+                    echo "<td>$id</td>";
+                    echo "<td>$selected_date</td>";
+                    echo "<td>$selected_time</td>";
+                    echo "<td>$stylist</td>";
+                    echo "<td>$selected_service</td>";
+                    echo "<td>$username</td>";
+                    echo "<td>$email</td>";
+                    echo "<td>$phoneNum</td>";
+                    echo "<td>$gender</td>";
+                    if (strtolower($status) === 'in session') {
+                        echo "<td><span class='status-in-session'>$status</span></td>";
+                    } else {
+                        echo "<td>$status</td>";
+                    }
+                    
+                    echo "<td>
+                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
+                        <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
+                      </td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </table>
     </div>
 </div>
-
-
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Selected Date</th>
-        <th>Selected Time</th>
-        <th>Stylist</th>
-        <th>Selected Service</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th>Gender</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-
-    <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $id = htmlspecialchars($row["id"]);
-            $selected_date = htmlspecialchars($row["selected_date"]);
-            $raw_time = $row["selected_time"];
-            $selected_time = date("h:i A", strtotime($raw_time));
-            $stylist = htmlspecialchars($row["stylist"]);
-            $selected_service = htmlspecialchars($row["selected_service"]);
-            $username = htmlspecialchars($row["username"]);
-            $email = htmlspecialchars($row["email"]);
-            $phoneNum = htmlspecialchars($row["phoneNum"]);
-            $gender = htmlspecialchars($row["gender"]);
-            $status = htmlspecialchars($row["status"]);
-
-            echo "<tr>";
-            echo "<td>$id</td>";
-            echo "<td>$selected_date</td>";
-            echo "<td>$selected_time</td>";
-            echo "<td>$stylist</td>";
-            echo "<td>$selected_service</td>";
-            echo "<td>$username</td>";
-            echo "<td>$email</td>";
-            echo "<td>$phoneNum</td>";
-            echo "<td>$gender</td>";
-            if (strtolower($status) === 'in session') {
-                echo "<td><span class='status-in-session'>$status</span></td>";
-            } else {
-                echo "<td>$status</td>";
-            }
-            
-            echo "<td>
-                <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
-                <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
-              </td>";
-            echo "</tr>";
-        }
-    }
-    ?>
-</table>
 
 <!-- Modal Background -->
 <div id="modalOverlay"></div>

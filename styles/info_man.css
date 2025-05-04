@@ -1,91 +1,89 @@
+* {
+    box-sizing: border-box;
+  }
+
 body {
-    body {
-        font-family: "Segoe UI", sans-serif;
-        background-color: #f0f0f0; 
-        padding: 0%;
-    }
-    
-    .header-wrapper {
-        background-color: #f0e1e1;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 20px;
-        flex-wrap: wrap;
-    }
-    
-    .header-wrapper h2 {
-        margin: 0;
-    }
-    
-    .date-time {
-        text-align: right;
-        font-size: 20px;
-    }
-    
-    .date-time .date {
-        font-weight: bold;
-    }
-    
-    .date-time .weekday-time {
-        font-size: 0.9em;
-        color: #333;
-    }
-    
-    .header-wrapper h2 {
-        font-size: 30px;
-    }
-    
-    table {
-        margin: 20px auto; /* centers the table horizontally */
-        border-collapse: collapse;
-    }
-    
-    th, td {
-        padding: 10px;
-        text-align: center;
-    }
-    
-    th {
-        background-color: #FFB3B399;
-    }
-    
-    .edit-btn {
-        border: 2px solid #ff5b5b;
-        background-color: transparent;
-        color: #ff5b5b;
-        padding: 4px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        text-decoration: none;
-    }
-    
-    .edit-btn:hover {
-        background-color: #ff5b5b;
-        color: white;
-    }
-    
-    .delete-btn {
-        background-color: #ff5b5b;
-        color: black;
-        border: none;
-        padding: 4px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        text-decoration: none;
-    }
-    
-    .delete-btn:hover {
-        opacity: 0.8;
-    }
-    
-    .status-in-session {
-        color: #4CAF50;
-        font-weight: bold;
-    }
+    font-family: "Segoe UI", sans-serif;
     background-color: #f0f0f0; 
     padding: 0%;
 }
+
+.header-wrapper {
+    background-color: #f0e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.header-wrapper h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.date-time {
+    text-align: right;
+    font-size: 20px;
+}
+
+.date-time .date {
+    font-weight: bold;
+}
+
+.date-time .weekday-time {
+    font-size: 0.9em;
+    color: #333;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #FFB3B399;
+}
+
+.edit-btn {
+    border: 2px solid #ff5b5b;
+    background-color: transparent;
+    color: #ff5b5b;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.edit-btn:hover {
+    background-color: #ff5b5b;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #ff5b5b;
+    color: black;
+    border: none;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.delete-btn:hover {
+    opacity: 0.8;
+}
+
+.status-in-session {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
 
 .header-wrapper {
     background-color: #f0e1e1;
@@ -165,3 +163,57 @@ th {
     color: #4CAF50;
     font-weight: bold;
 }
+
+.container {
+    display: flex;
+    height: 100vh;
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #FF5B5B; /* Red color */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+    height: 100vh; /* Full height */
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  .sidebar h2 {
+  text-align: center;
+  font-family: 'Great Vibes', cursive;
+  font-size: 38px; /* Increased font size */
+  font-weight: bold;
+  color: white; /* White color for "Arman Salon" */
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  }
+
+  .sidebar div {
+    flex-grow: 1; /* Allow this section to grow */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar a {
+  display: flex;
+  justify-content: center; /* Center text horizontally */
+  align-items: center; /* Center text vertically */
+  margin: 15px 20px; /* Increased margin to add more spacing between links */
+  padding: 18px; /* Increased padding for better space */
+  background-color: #fff5f5;
+  color: #CC3A3A;
+  text-decoration: none;
+  font-weight: bold;
+  border-left: 5px solid #FF5B5B;
+  border-radius: 10px;
+  text-align: center; /* Ensures the text is centered */
+  font-size: 18px; /* Button text size */
+  height: 60px; /* Fixed height for consistency */
+  }
+
+  .sidebar a:hover {
+    background-color: #f1c0c0;
+  }
