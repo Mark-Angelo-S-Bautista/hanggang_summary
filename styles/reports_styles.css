@@ -1,85 +1,89 @@
+/* Remove scrolling on the html and body */
+html,
 body {
-  font-family: "Segoe UI", sans-serif;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+/* Reset and Body Styles */
+body {
+  font-family: "Segoe UI", sans-serif;
   background: url("../img/bg.jpg") no-repeat center center fixed;
   background-size: cover;
   color: #333;
+}
+/* Full-page container fixed to viewport height */
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #ff5b5b;
+  color: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /* Removed height and overflow restrictions */
-}
-.header {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #f35b53;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 90%; /* Keep the content width */
-  max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
-  margin: 0 auto; /* Center the content horizontally */
-  position: relative; /* Keep the content positioned relative to the header */
-  z-index: 1001; /* Ensure the header content stays above the background */
+  padding: 20px 0;
+  height: 100vh;
+  flex-shrink: 0;
 }
-
-.header-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%; /* Extend the background to the full width of the page */
-  height: 80px; /* Match the height of the header */
-  background-color: #f35b53;
-  z-index: 1000; /* Place the background behind the header content */
-}
-
-.header-logo img {
-  height: 50px;
-  width: auto;
-}
-
-.header-title {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: "Segoe UI", sans-serif;
+.sidebar h2 {
   text-align: center;
-  flex-grow: 1; /* Push the title to the center */
+  font-family: "Great Vibes", cursive;
+  font-size: 38px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 45px;
 }
-
-.header-buttons {
+.sidebar div {
+  flex-grow: 1;
   display: flex;
-  gap: 15px;
+  flex-direction: column;
 }
-
-.header-button {
-  padding: 10px 15px;
-  background-color: white;
-  color: #f35b53;
+.sidebar a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 20px;
+  padding: 0px;
+  background-color: #fff5f5;
+  color: #cc3a3a;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  border-left: 5px solid #ff5b5b;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  height: 60px;
 }
-
-.header-button:hover {
-  background-color: #e35b53;
-  color: white;
+.sidebar a:hover {
+  background-color: #f1c0c0;
 }
-
-.header-button.active {
-  background-color: #e35b53;
-  color: white;
+.logout-link {
+  margin-bottom: 40px;
 }
-.search-container {
-  margin-top: 100px; /* Add space below the header */
+/* Main Content Styles – fit entirely in the viewport without scrolling */
+.main-content {
+  flex: 1;
   display: flex;
-  justify-content: center; /* Center the search bar horizontally */
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+/* Search area consumes minimal height */
+.search-container {
+  flex: 0 0 auto;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
-  width: 90%; /* Match the table's width */
-  max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
+  width: 90%;
+  max-width: 1200px;
 }
 .search-container input[type="text"],
 .month-filter select {
@@ -87,7 +91,7 @@ body {
   border: 1px solid #f35b53;
   border-radius: 5px;
   font-size: 16px;
-  width: 300px; /* Set a fixed width for the input field */
+  width: 300px;
 }
 .search-container button,
 .month-filter button {
@@ -105,84 +109,42 @@ body {
 .month-filter button:hover {
   background-color: #e35b53;
 }
+/* Content container for table and summary */
 .content-container {
-  margin-top: 30px; /* Add space to account for the fixed header */
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  width: 90%; /* Match the table's width */
-  max-width: 1200px; /* Ensure it doesn't exceed the table's max width */
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 10px;
 }
+/* Table container now set to 30% of available height */
 .table-container {
+  flex: 0 0 30%;
   width: 100%;
-  height: 80%; /* Adjust height to fit the table */
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
   overflow-y: auto;
-  border: 1px solid #ccc;
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-.summary-container {
-  display: flex;
-  flex-direction: column; /* Stack dropdowns and summary content */
-  align-items: center; /* Center everything horizontally */
-  width: 80%; /* Make the summary less wide */
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-top: 10px; /* Add space above the summary */
-  flex-shrink: 0; /* Prevent shrinking */
-  text-align: center; /* Center text horizontally */
-}
-.month-filter {
-  margin-bottom: 10px; /* Add space between dropdown and summary content */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Add spacing between dropdown and button */
-}
-.summary-content {
-  display: flex;
-  justify-content: space-between;
-  width: 100%; /* Ensure the summary content spans the full width */
-  text-align: center; /* Center text within each section */
-}
-.summary-left,
-.summary-right {
-  width: 48%; /* Split the container into two equal parts */
-}
-.summary-left h3,
-.summary-right h3 {
-  margin-bottom: 10px;
-  color: #f35b53;
-  font-size: 20px;
-  font-family: "Segoe UI", sans-serif;
-}
-.summary-left p,
-.summary-right p {
-  margin: 5px 0;
-  font-size: 16px;
-  font-weight: bold;
-  font-family: "Segoe UI", sans-serif;
 }
 table {
   width: 100%;
   border-collapse: collapse;
+  height: 100%;
 }
 th,
 td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 6px;
   text-align: left;
-  font-size: 16px;
+  font-size: 15px;
 }
 th {
   background-color: #f35b53;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   font-family: "Segoe UI", sans-serif;
   position: sticky;
@@ -194,4 +156,50 @@ tr:nth-child(even) {
 }
 tr:hover {
   background-color: #f1f1f1;
+}
+/* Summary container now set to 20% of available height */
+.summary-container {
+  flex: 0 0 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+.month-filter {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.summary-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+}
+.summary-left,
+.summary-right {
+  width: 48%;
+}
+.summary-left h3,
+.summary-right h3 {
+  margin-bottom: 10px;
+  color: #f35b53;
+  font-size: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+.summary-left p,
+.summary-right p {
+  margin: 5px 0;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: "Segoe UI", sans-serif;
 }
