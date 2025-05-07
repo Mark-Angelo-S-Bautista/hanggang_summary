@@ -70,8 +70,7 @@ $upcomingResult = $conn->query("
     font-size: 38px; /* Increased font size */
     font-weight: bold;
     color: white; /* White color for "Arman Salon" */
-    margin-bottom: 30px;
-    text-transform: uppercase;
+    margin-bottom: 45px;
     }
 
     .sidebar div {
@@ -101,32 +100,7 @@ $upcomingResult = $conn->query("
       background-color: #f1c0c0;
     }
 
-    .logout-link {
-      text-align: center;
-      padding: 10px; /* Reduced padding for logout button */
-    }
-
-    .logout-link a {
-    background-color: #fff5f5;
-    display: block;
-    padding: 10px 20px; /* Adjusted padding to make it smaller */
-    margin: 15px 20px; /* Add margin for spacing */
-    border-left: 5px solid #FF5B5B;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    color: #CC3A3A;
-    font-size: 16px; /* Reduced font size */
-    text-align: center; /* Center text horizontally */
-    height: auto; /* Let the height adjust based on the content */
-    display: flex; /* Ensures it takes full width */
-    justify-content: center; /* Center text horizontally */
-    align-items: center; /* Center text vertically */
-    }
-
-    .logout-link a:hover {
-      background-color: #f1c0c0;
-    }
+    /*binura ko yung sa logout ha*/ 
 
     .main-content {
       flex: 1;

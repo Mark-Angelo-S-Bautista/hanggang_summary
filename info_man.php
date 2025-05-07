@@ -148,6 +148,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Form Info Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="styles/info_man.css">
@@ -157,7 +158,7 @@ $result = $stmt->get_result();
 <div class="container">
     <div class="sidebar">
         <div>
-            <h2>Arman Salon</h2>
+            <h2 class="as-heading">Arman Salon</h2>
             <a href="dashboard.php">Dashboard</a>
             <a href="info_man.php">Information Management</a>
             <a href="reports.php">Reports</a>
