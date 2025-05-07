@@ -22,37 +22,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $edit_status = $_POST['edit_status'];
 
         // Fetch the current selected_date and selected_time from the database
-$fetchSql = "SELECT selected_date, selected_time, status FROM form_info WHERE id = ?";
-$fetchStmt = $conn->prepare($fetchSql);
-$fetchStmt->bind_param("i", $edit_id);
-$fetchStmt->execute();
-$fetchResult = $fetchStmt->get_result();
-$currentData = $fetchResult->fetch_assoc();
-$fetchStmt->close();
+        $fetchSql = "SELECT selected_date, selected_time, status FROM form_info WHERE id = ?";
+        $fetchStmt = $conn->prepare($fetchSql);
+        $fetchStmt->bind_param("i", $edit_id);
+        $fetchStmt->execute();
+        $fetchResult = $fetchStmt->get_result();
+        $currentData = $fetchResult->fetch_assoc();
+        $fetchStmt->close();
 
-$current_date = $currentData['selected_date'];
-$current_time = $currentData['selected_time'];
-$current_status = $currentData['status'];
+        $current_date = $currentData['selected_date'];
+        $current_time = $currentData['selected_time'];
+        $current_status = $currentData['status'];
 
-// Convert new date and time to DateTime
-date_default_timezone_set('Asia/Manila');
-$combinedDateTime = new DateTime($edit_selected_date . ' ' . $edit_selected_time);
-$currentDateTime = new DateTime();
+        // Convert new date and time to DateTime
+        date_default_timezone_set('Asia/Manila');
+        $combinedDateTime = new DateTime($edit_selected_date . ' ' . $edit_selected_time);
+        $currentDateTime = new DateTime();
 
-// Reset status to "Scheduled" only if date/time changed, status wasn't manually changed, and new time is in the future
-if (
-    ($edit_selected_date !== $current_date || $edit_selected_time !== $current_time) &&
-    $edit_status === $current_status &&
-    $combinedDateTime > $currentDateTime
-) {
-    $edit_status = "Scheduled";
-}
+        // Reset status to "Scheduled" only if date/time changed, status wasn't manually changed, and new time is in the future
+        if (
+            ($edit_selected_date !== $current_date || $edit_selected_time !== $current_time) &&
+            $edit_status === $current_status &&
+            $combinedDateTime > $currentDateTime
+        ) {
+            $edit_status = "Scheduled";
+        }
 
-// Allow admin override from Cancelled to In Session
-if ($current_status === "Cancelled" && $edit_status === "In Session") {
-    $edit_status = "In Session";
-}
-
+        // Allow admin override from Cancelled to In Session
+        if ($current_status === "Cancelled" && $edit_status === "In Session") {
+            $edit_status = "In Session";
+        }
 
         $updateSql = "UPDATE form_info SET 
                         username = ?, 
@@ -86,10 +85,15 @@ if ($current_status === "Cancelled" && $edit_status === "In Session") {
         $deleteSql = "DELETE FROM form_info WHERE id = ?";
         $stmt = $conn->prepare($deleteSql);
         $stmt->bind_param("i", $edit_id);
+
         if ($stmt->execute()) {
-            echo "<script>alert('Record deleted successfully.'); window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+            echo "Record deleted successfully.";
+        } else {
+            echo "Error deleting record: " . $conn->error;
         }
+
         $stmt->close();
+        exit(); // Stop further execution
     }
 }
 
@@ -144,6 +148,8 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Form Info Table</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="styles/info_man.css">
 </head>
 <body>
@@ -237,46 +243,56 @@ $result = $stmt->get_result();
     <h3>Edit Appointment</h3>
     <form id="editForm" method="POST" action="">
         <input type="hidden" name="edit_id" id="edit_id">
-        <p><label>Selected Date:</label><br><input type="date" name="edit_selected_date" id="edit_selected_date"></p>
-        <p><label>Selected Time:</label><br>
-            <select name="edit_selected_time" id="edit_selected_time">
-                <option value="09:00 AM">9:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="01:00 PM">1:00 PM</option>
-                <option value="02:00 PM">2:00 PM</option>
-                <option value="03:00 PM">3:00 PM</option>
-                <option value="04:00 PM">4:00 PM</option>
-                <option value="05:00 PM">5:00 PM</option>
-            </select>
-        </p>
-        <p><label>Stylist:</label><br><input type="text" name="edit_stylist" id="edit_stylist"></p>
-        <p><label>Selected Service:</label><br><input type="text" name="edit_selected_service" id="edit_selected_service"></p>
-        <p><label>Username:</label><br><input type="text" name="edit_username" id="edit_username"></p>
-        <p><label>Email:</label><br><input type="email" name="edit_email" id="edit_email"></p>
-        <p><label>Phone Number:</label><br><input type="tel" name="edit_phoneNum" id="edit_phoneNum"></p>
-        <p>
-            <label>Gender:</label><br>
-            <select name="edit_gender" id="edit_gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-        </p>
-        <p>
-            <label>Status:</label><br>
-            <select name="edit_status" id="edit_status">
-                <option value="Scheduled">Scheduled</option>
-                <option value="In Session">In Session</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-            </select>
-        </p>
-        <p>
-            <button type="submit" name="update" onclick="return confirm('Are you sure you want to update this record?')">Update</button>
-            <button type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
+        <div class="form-container">
+            <!-- Left Side -->
+            <div class="form-column">
+                <p><label>Selected Date:</label><br><input type="date" name="edit_selected_date" id="edit_selected_date"></p>
+                <p><label>Selected Time:</label><br>
+                    <select name="edit_selected_time" id="edit_selected_time">
+                        <option value="09:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="01:00 PM">1:00 PM</option>
+                        <option value="02:00 PM">2:00 PM</option>
+                        <option value="03:00 PM">3:00 PM</option>
+                        <option value="04:00 PM">4:00 PM</option>
+                        <option value="05:00 PM">5:00 PM</option>
+                    </select>
+                </p>
+                <p><label>Stylist:</label><br><input type="text" name="edit_stylist" id="edit_stylist"></p>
+                <p><label>Selected Service:</label><br><input type="text" name="edit_selected_service" id="edit_selected_service"></p>
+            </div>
+
+            <!-- Right Side -->
+            <div class="form-column">
+                <p><label>Username:</label><br><input type="text" name="edit_username" id="edit_username"></p>
+                <p><label>Email:</label><br><input type="email" name="edit_email" id="edit_email"></p>
+                <p><label>Phone Number:</label><br><input type="tel" name="edit_phoneNum" id="edit_phoneNum"></p>
+                <p>
+                    <label>Gender:</label><br>
+                    <select name="edit_gender" id="edit_gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </p>
+                <p>
+                    <label>Status:</label><br>
+                    <select name="edit_status" id="edit_status">
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="In Session">In Session</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </p>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-buttons">
+            <button type="submit" name="update">Update</button>
             <button type="button" onclick="closeModal()">Cancel</button>
-        </p>
+        </div>
     </form>
 </div>
 
@@ -307,13 +323,38 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
         }
     }
 
+    // Show the modal and overlay
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
 }
 
 function closeModal() {
+    // Hide the modal and overlay
     document.getElementById('editModal').style.display = 'none';
     document.getElementById('modalOverlay').style.display = 'none';
+}
+
+function deleteRecord() {
+    const editId = document.getElementById('edit_id').value;
+
+    if (confirm('Are you sure you want to delete this record?')) {
+        fetch('info_man.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `delete=true&edit_id=${editId}`,
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                alert('Record deleted successfully.');
+                location.reload(); // Reload the page to reflect the changes
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Failed to delete the record.');
+            });
+    }
 }
 
 function formatDateTime() {
@@ -339,6 +380,15 @@ function formatDateTime() {
 
 formatDateTime();
 setInterval(formatDateTime, 60000); // update every minute
+
+document.addEventListener('DOMContentLoaded', function () {
+    flatpickr("#edit_selected_date", {
+        dateFormat: "Y-m-d", // Format to match your database
+        minDate: "today", // Prevent selecting past dates
+        defaultDate: new Date(), // Set the default date to today
+        disableMobile: true // Force the custom calendar on mobile devices
+    });
+});
 </script>
 
 </body>

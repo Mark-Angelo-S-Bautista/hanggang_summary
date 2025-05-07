@@ -75,7 +75,7 @@
 </style>
 </head>
 <body>
-  <div class="container">
+    <div class="container">
     <div class="sidebar">
       <div>
         <h2>Arman Salon</h2>
@@ -87,4 +87,5 @@
       <div class="logout-link">
         <a href="logout.php">Logout</a>
       </div>
+    </div>
     </div>

@@ -36,9 +36,8 @@ body {
     color: #333;
 }
 
-table {
-    margin: 20px auto;
-    border-collapse: collapse;
+.main-content {
+    margin-left: 20px;
 }
 
 th, td {
@@ -83,7 +82,6 @@ th {
     color: #4CAF50;
     font-weight: bold;
 }
-
 
 .header-wrapper {
     background-color: #f0e1e1;
@@ -217,3 +215,174 @@ th {
   .sidebar a:hover {
     background-color: #f1c0c0;
   }
+
+/* Modal Overlay */
+#modalOverlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999;
+}
+
+#editModal input {
+    border-color: #fbb9b9; /* Change the border color to red */
+}
+
+#editModal input, select {
+    border: 2px solid #fbb9b9;
+    outline: none; /* removes default blue outline */
+    box-shadow: none; /* removes any shadow */
+    background-color: white; /* optional: make sure bg is clean */
+
+    padding: 10px 12px; /* Increase padding for larger size */
+    font-size: 13px; /* Increase font size */
+    border-radius: 5px; /* Rounded corners */
+    /*width: 100%; /* Ensure full width */
+    margin: px 0; /* Add spacing between fields */
+}
+
+#editModal input:focus {
+    border-color: #ff5b5b;
+    box-shadow: none; /* remove browser glow */
+    outline: none;
+}
+
+#editModal button {
+    background-color: #ff5b5b; /* Red background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Add padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for buttons */
+#editModal button:hover {
+    background-color: #cc3a3a; /* Darker red on hover */
+}
+
+h3 {
+    color: #ff5b5b;
+}
+
+/* Modal Popup */
+#editModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 600px;
+    max-width: 90%;
+}
+
+/* Close Button */
+#editModal button {
+    margin-top: 10px;
+}
+
+/* Form Container */
+.form-container {
+    display: flex;
+    gap: 20px; /* Add spacing between the two columns */
+}
+
+/* Form Columns */
+.form-column {
+    flex: 1; /* Each column takes up equal space */
+}
+
+/* Buttons Row */
+.form-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Calendar background */
+.flatpickr-calendar {
+    background-color: #fbbebe;
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Calendar header (month) */
+.flatpickr-month {
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Weekday labels (Mo, Tu, etc.) */
+.flatpickr-weekday {
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Day cells */
+.flatpickr-day {
+    color: #333;
+    font-size: 14px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    margin: 2px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Past/future days (not selected) */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: #999 !important;
+    cursor: not-allowed;
+}
+
+/* Hover effect */
+.flatpickr-day:hover {
+    background-color: #ff9a9a;
+    color: white;
+}
+
+/* Selected day style - white circle with better spacing */
+.flatpickr-day.selected {
+    border: 2px solid #ff5b5b !important;  /* Add red border */
+    background-color: white !important;
+    color: #000 !important;
+    font-weight: bold;
+    position: relative;
+    line-height: 28px; /* slightly less to give space below */
+    height: 36px;
+    width: 36px;
+}
+
+/* Red dot below the number */
+.flatpickr-day.selected::after {
+    content: "";
+    position: absolute;
+    bottom: 4px; /* lowered a bit */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #ff5b5b;
+    border-radius: 50%;
+    z-index: 1;
+}
