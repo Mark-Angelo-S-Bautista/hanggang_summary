@@ -203,3 +203,152 @@ tr:hover {
   font-weight: bold;
   font-family: "Segoe UI", sans-serif;
 }
+/* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
+}

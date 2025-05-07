@@ -84,6 +84,40 @@ try {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(event) {
+                event.preventDefault(); // prevent redirection
+                document.getElementById('logoutModal').style.display = 'block';
+                document.querySelector('.container').classList.add('blur');
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+            document.querySelector('.container').classList.remove('blur');
+        }
+
+        var closeIcon = document.querySelector('.modal-content .close');
+        if (closeIcon) {
+            closeIcon.addEventListener('click', closeModal);
+        }
+        
+        var cancelBtn = document.querySelector('.modal-content .cancel-btn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', closeModal);
+        }
+
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById('logoutModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
@@ -102,7 +136,7 @@ try {
                 <a href="settings.php">Settings</a>
             </div>
             <div class="logout-link">
-                <a href="logout.php">Logout</a>
+                <a href="log_out.php" id="logoutBtn">Logout</a>
             </div>
         </div>
         <div class="main-content">
@@ -185,6 +219,17 @@ try {
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Confirm Logout</h3>
+            <form method="POST" action="log_out.php">
+                <p>Are you sure you want to logout?</p>
+                <button type="submit">Logout</button>
+                <button type="button" class="cancel-btn">Cancel</button>
+            </form>
         </div>
     </div>
 </body>
