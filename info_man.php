@@ -168,6 +168,7 @@ $result = $stmt->get_result();
         </div>
     </div>
 
+    <div class="main-content-wrapper">
     <div class="main-content">
         <div class="header-wrapper">
             <h2>Appointments for Today</h2>
@@ -233,6 +234,7 @@ $result = $stmt->get_result();
             ?>
         </table>
     </div>
+</div>
 </div>
 
 <!-- Modal Background -->

@@ -3,9 +3,13 @@
   }
 
 body {
+    margin: 0;
+    padding: 0;
     font-family: "Segoe UI", sans-serif;
-    background-color: #f0f0f0; 
-    padding: 0%;
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
 }
 
 .header-wrapper {
@@ -13,8 +17,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 20px;
+
     flex-wrap: wrap;
+    width: 100vw; /* Ensure it spans the full width */
+    box-sizing: border-box; /* Include padding in the width */
 }
 
 .header-wrapper h2 {
@@ -34,19 +40,6 @@ body {
 .date-time .weekday-time {
     font-size: 0.9em;
     color: #333;
-}
-
-.main-content {
-    margin-left: 20px;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #FFB3B399;
 }
 
 .edit-btn {
@@ -87,9 +80,10 @@ th {
     background-color: #f0e1e1;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     padding: 20px;
-    flex-wrap: wrap;
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .header-wrapper h2 {
@@ -117,15 +111,33 @@ th {
 table {
     margin: 20px auto; /* centers the table horizontally */
     border-collapse: collapse;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
+    background-color: white; /* White background for the table */
+    margin: 20px auto; /* Center the table horizontally */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
 th {
-    background-color: #FFB3B399;
+    background-color: #FF5B5B; /* Light red background for the header */
+    color: black; /* Black text color */
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #ddd; /* Add a bottom border */
+}
+
+td {
+    background-color: white; /* White background for table cells */
+    color: black; /* Black text color */
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
+}
+
+th {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
+
 }
 
 .edit-btn {
@@ -139,12 +151,12 @@ th {
 }
 
 .edit-btn:hover {
-    background-color: #ff5b5b;
+    background-color: #FF5B5B;
     color: white;
 }
 
 .delete-btn {
-    background-color: #ff5b5b;
+    background-color: #FF5B5B;
     color: black;
     border: none;
     padding: 4px 10px;
@@ -162,13 +174,16 @@ th {
     font-weight: bold;
 }
 
+/* Ensure the container takes up the full viewport height */
 .container {
     display: flex;
-    height: 100vh;
-  }
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Prevent content from overflowing */
+}
 
-  .sidebar {
-    width: 250px;
+/* Sidebar styles */
+.sidebar {
+    width: 250px; /* Fixed width for the sidebar */
     background-color: #FF5B5B; /* Red color */
     color: white;
     display: flex;
@@ -177,9 +192,23 @@ th {
     padding: 20px 0;
     height: 100vh; /* Full height */
     flex-shrink: 0; /* Prevent shrinking */
-  }
+}
 
-  .sidebar h2 {
+/* Main content wrapper to prevent overflow */
+.main-content-wrapper {
+    flex: 1; /* Take up the remaining space */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto; /* Allow vertical scrolling if needed */
+}
+
+/* Main content styles */
+.main-content {
+    box-sizing: border-box; /* Include padding in the width */
+    width: 100%; /* Ensure it doesn't overflow */
+    max-width: 100%; /* Prevent content from exceeding the screen width */
+}
+
+.sidebar h2 {
   text-align: center;
   font-family: 'Great Vibes', cursive;
   font-size: 38px; /* Increased font size */
