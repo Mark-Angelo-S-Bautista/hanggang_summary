@@ -267,10 +267,10 @@ th {
     box-shadow: none; /* removes any shadow */
     background-color: white; /* optional: make sure bg is clean */
 
-    padding: 10px 12px; /* Increase padding for larger size */
-    font-size: 13px; /* Increase font size */
+    padding: 8px 10px; /* Increase padding for larger size */
+    font-size: 15px; /* Increase font size */
     border-radius: 5px; /* Rounded corners */
-    /*width: 100%; /* Ensure full width */
+    width: 100%; /* Ensure full width */
     margin: px 0; /* Add spacing between fields */
 }
 
@@ -278,6 +278,10 @@ th {
     border-color: #ff5b5b;
     box-shadow: none; /* remove browser glow */
     outline: none;
+}
+
+.form-column label{
+    font-weight: bold;
 }
 
 #editModal button {
@@ -297,12 +301,17 @@ th {
 }
 
 h3 {
+    margin: 0;
+    padding: 0;
     color: #ff5b5b;
+    text-align: center;
+    font-size: 25px;
 }
 
 /* Modal Popup */
 #editModal {
-    display: none; /* Hidden by default */
+    /*display: block !important;*/
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -318,7 +327,7 @@ h3 {
 
 /* Close Button */
 #editModal button {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* Form Container */
@@ -351,8 +360,8 @@ h3 {
 .flatpickr-month {
     background-color: transparent;
     color: black;
-    font-weight: bold;
-    padding: 10px;
+    font-weight: 700 !important;
+    padding: 0px;
     border-radius: 10px 10px 0 0;
 }
 

@@ -244,7 +244,7 @@ $result = $stmt->get_result();
 <!-- Modal Popup Form -->
 <div id="editModal">
     <h3>Edit Appointment</h3>
-    <form id="editForm" method="POST" action="">
+    <form id="editForm" method="POST" action="" onsubmit="return validateForm();">
         <input type="hidden" name="edit_id" id="edit_id">
         <div class="form-container">
             <!-- Left Side -->
@@ -392,6 +392,38 @@ document.addEventListener('DOMContentLoaded', function () {
         disableMobile: true // Force the custom calendar on mobile devices
     });
 });
+
+function validateForm() {
+    const requiredFields = [
+        'edit_selected_date',
+        'edit_selected_time',
+        'edit_stylist',
+        'edit_selected_service',
+        'edit_username',
+        'edit_email',
+        'edit_phoneNum',
+        'edit_gender',
+        'edit_status'
+    ];
+
+    let isValid = true;
+
+    requiredFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+            field.style.borderColor = 'red'; // Highlight the missing field
+            isValid = false;
+        } else {
+            field.style.borderColor = ''; // Reset the border color if valid
+        }
+    });
+
+    if (!isValid) {
+        alert('Please fill out all required fields.');
+    }
+
+    return isValid; // Return true if all fields are valid, false otherwise
+}
 </script>
 
 </body>
