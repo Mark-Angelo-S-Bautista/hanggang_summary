@@ -1,10 +1,16 @@
 <?php
-session_start();
-$accountCreated = false;
+session_start(); // Start session at the very beginning
 
+// If user is already logged in (e.g., session 'id' is set), redirect them to reports page
+if (isset($_SESSION['id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
+$accountCreated = false;
 if (isset($_SESSION['account_created'])) {
     $accountCreated = true;
-    unset($_SESSION['account_created']);
+    unset($_SESSION['account_created']); // Clear the message after displaying it once
 }
 ?>
 
@@ -17,7 +23,7 @@ if (isset($_SESSION['account_created'])) {
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-image: url('img/bg.jpg');
+      background-image: url('img/bg.jpg'); /* Ensure img/bg.jpg path is correct */
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -25,7 +31,6 @@ if (isset($_SESSION['account_created'])) {
       height: 100vh;
       margin: 0;
     }
-
     .form-container {
       background: white;
       padding: 40px;
@@ -35,23 +40,21 @@ if (isset($_SESSION['account_created'])) {
       max-width: 400px;
       text-align: center;
     }
-
     .form-container h1 {
       font-family: 'Great Vibes', cursive;
       color: #FF5B5B;
       margin-bottom: 10px;
       font-size: 42px;
     }
-
     input[type="text"],
     input[type="password"] {
+      box-sizing: border-box; /* Added for better width management */
       width: 100%;
       padding: 12px;
       margin: 10px 0;
       border-radius: 10px;
       border: 1px solid #ccc;
     }
-
     button {
       width: 100%;
       padding: 15px;
@@ -61,31 +64,32 @@ if (isset($_SESSION['account_created'])) {
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      margin-top: 10px; /* Added margin for spacing */
     }
-
     button:hover {
       background-color: #CC3A3A;
     }
-
     .success-msg {
       color: green;
       font-weight: bold;
       margin-top: 10px;
+      margin-bottom: 10px; /* Added for spacing */
     }
-
     .error-msg {
       color: red;
       font-weight: bold;
       margin-top: 10px;
+      margin-bottom: 10px; /* Added for spacing */
     }
-
     p {
       margin-top: 20px;
     }
-
     a {
       color: #FF5B5B;
       text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -95,12 +99,10 @@ if (isset($_SESSION['account_created'])) {
   <h1>Arman Salon</h1>
   <p>Admin Login</p>
 
-  <!-- Success message (only after registration) -->
   <?php if ($accountCreated): ?>
-    <p class="success-msg">Account successfully created!</p>
+    <p class="success-msg">Account successfully created! Please login.</p>
   <?php endif; ?>
 
-  <!-- Error message (optional) -->
   <?php if (isset($_GET['error'])): ?>
     <p class="error-msg"><?php echo htmlspecialchars($_GET['error']); ?></p>
   <?php endif; ?>
@@ -111,11 +113,17 @@ if (isset($_SESSION['account_created'])) {
   <p>No account yet? <a href="admin_register.php">Create one</a></p>
 </form>
 
-<!-- Optional: Auto-hide success message -->
 <script>
+  // Auto-hide success message after 3 seconds
   setTimeout(() => {
-    const msg = document.querySelector('.success-msg');
-    if (msg) msg.style.display = 'none';
+    const successMsg = document.querySelector('.success-msg');
+    if (successMsg) {
+      successMsg.style.transition = 'opacity 1s ease-out';
+      successMsg.style.opacity = '0';
+      setTimeout(() => { successMsg.style.display = 'none'; }, 1000);
+    }
+    // You might want to do the same for error messages if they are not from GET parameters
+    // or handle GET parameter clearing differently (e.g. using history.replaceState)
   }, 3000);
 </script>
 

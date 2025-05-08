@@ -1,9 +1,16 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: admin_login.php");
-    exit();
+// CRITICAL: Check if user is logged in (e.g., by checking for 'id' in session)
+if (!isset($_SESSION['id'])) {
+    header("Location: admin_login.php"); // Redirect to login page if not logged in
+    exit(); // Stop further script execution
 }
+
+// Send no-cache headers to prevent browser caching of this protected page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0"); // Proxies
 
 $conn = new mysqli('localhost', 'root', '', 'armansalon');
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
@@ -32,6 +39,55 @@ $upcomingResult = $conn->query("
   <meta charset="UTF-8">
   <title>Admin Dashboard - Arman Salon</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    var logoutBtn = document.getElementById('logoutBtn');
+    var logoutModal = document.getElementById('logoutModal');
+    var container = document.querySelector('.container');
+
+    console.log("logoutBtn:", logoutBtn);
+    console.log("logoutModal:", logoutModal);
+    console.log("container:", container);
+
+    if (logoutBtn && logoutModal) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // prevent default link behavior
+            console.log("Logout button clicked");
+            logoutModal.style.display = 'block';
+            if (container) {
+                container.classList.add('blur');
+            }
+        });
+    } else {
+        console.error("Logout button or modal not found.");
+    }
+
+    function closeModal() {
+        logoutModal.style.display = 'none';
+        if (container) {
+            container.classList.remove('blur');
+        }
+        console.log("Modal closed");
+    }
+
+    var closeIcon = document.querySelector('#logoutModal .modal-content .close');
+    if (closeIcon) {
+        closeIcon.addEventListener('click', closeModal);
+    }
+
+    var cancelBtn = document.querySelector('#logoutModal .modal-content .cancel-btn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+
+    // Close modal if user clicks outside the modal content
+    window.addEventListener('click', function(event) {
+        if (event.target === logoutModal) {
+            closeModal();
+        }
+    });
+});
+</script>
   <style>
     * {
       box-sizing: border-box;
@@ -169,6 +225,155 @@ $upcomingResult = $conn->query("
       background-color: #FF5B5B;
       color: white;
     }
+    /* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
+}
   </style>
 </head>
 <body>
@@ -182,7 +387,7 @@ $upcomingResult = $conn->query("
         <a href="settings.php">Settings</a>
       </div>
       <div class="logout-link">
-        <a href="logout.php">Logout</a>
+        <a href="log_out.php" id="logoutBtn">Logout</a>
       </div>
     </div>
 
@@ -219,6 +424,18 @@ $upcomingResult = $conn->query("
       </div>
     </div>
   </div>
+<!-- Logout Modal Markup -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Confirm Logout</h3>
+        <form method="POST" action="log_out.php">
+            <p>Are you sure you want to logout?</p>
+            <button type="submit" name="confirm_logout">Logout</button>
+            <button type="button" class="cancel-btn">Cancel</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
 <?php $conn->close(); ?>

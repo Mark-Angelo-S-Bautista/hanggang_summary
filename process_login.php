@@ -1,34 +1,50 @@
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root', '', 'armansalon');
+require "database.php"; // Your database connection file
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'] ?? '';
+    $password_attempt = $_POST['psw'] ?? ''; // Matches name="psw" in admin_login.php
 
-$username = trim($_POST['username']);
-$password = trim($_POST['psw']);
-
-$sql = "SELECT * FROM admins WHERE username=?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($row = $result->fetch_assoc()) {
-    if (password_verify($password, $row['psw'])) {
-        $_SESSION['admin_id'] = $row['id'];
-        header("Location: dashboard.php");
+    if (empty($username) || empty($password_attempt)) {
+        header("Location: admin_login.php?error=" . urlencode("Username and password are required."));
         exit();
-    } else {
-        header("Location: admin_login.php?error=" . urlencode("Maling password."));
+    }
+
+    try {
+        // Fetch user from the database based on username
+        // ENSURE your table is named correctly (e.g., 'admins' or 'users')
+        // and columns are 'id', 'username', 'password_hash'
+        $stmt = $pdo->prepare("SELECT id, username, psw FROM admins WHERE username = :username LIMIT 1");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password_attempt, $user['psw'])) {
+            // Password is correct, regenerate session ID for security
+            session_regenerate_id(true);
+
+            // Store user information in session
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            // Add any other user details you need in the session
+
+            header("Location: dashboard.php"); // Redirect to the reports page
+            exit();
+        } else {
+            // Invalid username or password
+            header("Location: admin_login.php?error=" . urlencode("Invalid username or password."));
+            exit();
+        }
+    } catch (PDOException $e) {
+        // Log the database error, don't show specifics to user
+        error_log("Login PDOException: " . $e->getMessage());
+        header("Location: admin_login.php?error=" . urlencode("A system error occurred. Please try again later."));
         exit();
     }
 } else {
-    header("Location: admin_login.php?error=" . urlencode("Hindi nahanap ang account."));
+    // If not a POST request, redirect to login page
+    header("Location: admin_login.php");
     exit();
 }
-
-$stmt->close();
-$conn->close();
 ?>

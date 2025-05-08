@@ -1,6 +1,17 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+session_start();
+// CRITICAL: Check if user is logged in (e.g., by checking for 'id' in session)
+if (!isset($_SESSION['id'])) {
+    header("Location: admin_login.php"); // Redirect to login page if not logged in
+    exit(); // Stop further script execution
+}
+
+// Send no-cache headers to prevent browser caching of this protected page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0"); // Proxies
+
 $conn = new mysqli("localhost", "root", "", "armansalon");
 
 if ($conn->connect_error) {
@@ -165,7 +176,7 @@ $result = $stmt->get_result();
             <a href="settings.php">Settings</a>
         </div>
         <div class="logout-link">
-            <a href="logout.php">Logout</a>
+            <a href="log_out.php" id="logoutBtn">Logout</a>
         </div>
     </div>
 
@@ -424,7 +435,65 @@ function validateForm() {
 
     return isValid; // Return true if all fields are valid, false otherwise
 }
-</script>
+document.addEventListener("DOMContentLoaded", function() {
+    var logoutBtn = document.getElementById('logoutBtn');
+    var logoutModal = document.getElementById('logoutModal');
+    var container = document.querySelector('.container');
 
+    console.log("logoutBtn:", logoutBtn);
+    console.log("logoutModal:", logoutModal);
+    console.log("container:", container);
+
+    if (logoutBtn && logoutModal) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // prevent default link behavior
+            console.log("Logout button clicked");
+            logoutModal.style.display = 'block';
+            if (container) {
+                container.classList.add('blur');
+            }
+        });
+    } else {
+        console.error("Logout button or modal not found.");
+    }
+
+    function closeModal() {
+        logoutModal.style.display = 'none';
+        if (container) {
+            container.classList.remove('blur');
+        }
+        console.log("Modal closed");
+    }
+
+    var closeIcon = document.querySelector('#logoutModal .modal-content .close');
+    if (closeIcon) {
+        closeIcon.addEventListener('click', closeModal);
+    }
+
+    var cancelBtn = document.querySelector('#logoutModal .modal-content .cancel-btn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+
+    // Close modal if user clicks outside the modal content
+    window.addEventListener('click', function(event) {
+        if (event.target === logoutModal) {
+            closeModal();
+        }
+    });
+});
+</script>
+<!-- Logout Modal Markup -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Confirm Logout</h3>
+        <form method="POST" action="log_out.php">
+            <p>Are you sure you want to logout?</p>
+            <button type="submit" name="confirm_logout">Logout</button>
+            <button type="button" class="cancel-btn">Cancel</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

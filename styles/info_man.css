@@ -1,426 +1,574 @@
 * {
-    box-sizing: border-box;
-  }
+  box-sizing: border-box;
+}
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", sans-serif;
-    background-image: url('../img/bg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    background-position: center; /* Centers the image */
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-image: url("../img/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
 }
 
 .header-wrapper {
-    background-color: #f0e1e1;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  background-color: #f0e1e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 
-    flex-wrap: wrap;
-    width: 100vw; /* Ensure it spans the full width */
-    box-sizing: border-box; /* Include padding in the width */
+  flex-wrap: wrap;
+  width: 100vw; /* Ensure it spans the full width */
+  box-sizing: border-box; /* Include padding in the width */
 }
 
 .header-wrapper h2 {
-    margin: 0;
-    font-size: 30px;
+  margin: 0;
+  font-size: 30px;
 }
 
 .date-time {
-    text-align: right;
-    font-size: 20px;
+  text-align: right;
+  font-size: 20px;
 }
 
 .date-time .date {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .date-time .weekday-time {
-    font-size: 0.9em;
-    color: #333;
+  font-size: 0.9em;
+  color: #333;
 }
 
 .edit-btn {
-    border: 2px solid #ff5b5b;
-    background-color: transparent;
-    color: #ff5b5b;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: none;
+  border: 2px solid #ff5b5b;
+  background-color: transparent;
+  color: #ff5b5b;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
 .edit-btn:hover {
-    background-color: #ff5b5b;
-    color: white;
+  background-color: #ff5b5b;
+  color: white;
 }
 
 .delete-btn {
-    background-color: #ff5b5b;
-    color: black;
-    border: none;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: none;
+  background-color: #ff5b5b;
+  color: black;
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
 .delete-btn:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .status-in-session {
-    color: #4CAF50;
-    font-weight: bold;
+  color: #4caf50;
+  font-weight: bold;
 }
 
 .header-wrapper {
-    background-color: #f0e1e1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Include padding in width */
+  background-color: #f0e1e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 100%; /* Full width */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 .header-wrapper h2 {
-    margin: 0;
+  margin: 0;
 }
 
 .date-time {
-    text-align: right;
-    font-size: 20px;
+  text-align: right;
+  font-size: 20px;
 }
 
 .date-time .date {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .date-time .weekday-time {
-    font-size: 0.9em;
-    color: #333;
+  font-size: 0.9em;
+  color: #333;
 }
 
 .header-wrapper h2 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 table {
-    margin: 20px auto; /* centers the table horizontally */
-    border-collapse: collapse;
-    background-color: white; /* White background for the table */
-    margin: 20px auto; /* Center the table horizontally */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  margin: 20px auto; /* centers the table horizontally */
+  border-collapse: collapse;
+  background-color: white; /* White background for the table */
+  margin: 20px auto; /* Center the table horizontally */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
 th {
-    background-color: #FF5B5B; /* Light red background for the header */
-    color: black; /* Black text color */
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-    border-bottom: 2px solid #ddd; /* Add a bottom border */
+  background-color: #ff5b5b; /* Light red background for the header */
+  color: black; /* Black text color */
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #ddd; /* Add a bottom border */
 }
 
 td {
-    background-color: white; /* White background for table cells */
-    color: black; /* Black text color */
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
+  background-color: white; /* White background for table cells */
+  color: black; /* Black text color */
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
 }
 
 th {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
-
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
 }
 
 .edit-btn {
-    border: 2px solid #ff5b5b;
-    background-color: transparent;
-    color: #ff5b5b;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: none;
+  border: 2px solid #ff5b5b;
+  background-color: transparent;
+  color: #ff5b5b;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
 .edit-btn:hover {
-    background-color: #FF5B5B;
-    color: white;
+  background-color: #ff5b5b;
+  color: white;
 }
 
 .delete-btn {
-    background-color: #FF5B5B;
-    color: black;
-    border: none;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: none;
+  background-color: #ff5b5b;
+  color: black;
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
 .delete-btn:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .status-in-session {
-    color: #4CAF50;
-    font-weight: bold;
+  color: #4caf50;
+  font-weight: bold;
 }
 
 /* Ensure the container takes up the full viewport height */
 .container {
-    display: flex;
-    height: 100vh; /* Full height of the viewport */
-    overflow: hidden; /* Prevent content from overflowing */
+  display: flex;
+  height: 100vh; /* Full height of the viewport */
+  overflow: hidden; /* Prevent content from overflowing */
 }
 
 /* Sidebar styles */
 .sidebar {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: #FF5B5B; /* Red color */
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px 0;
-    height: 100vh; /* Full height */
-    flex-shrink: 0; /* Prevent shrinking */
+  width: 250px; /* Fixed width for the sidebar */
+  background-color: #ff5b5b; /* Red color */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+  height: 100vh; /* Full height */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Main content wrapper to prevent overflow */
 .main-content-wrapper {
-    flex: 1; /* Take up the remaining space */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    overflow-y: auto; /* Allow vertical scrolling if needed */
+  flex: 1; /* Take up the remaining space */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling if needed */
 }
 
 /* Main content styles */
 .main-content {
-    box-sizing: border-box; /* Include padding in the width */
-    width: 100%; /* Ensure it doesn't overflow */
-    max-width: 100%; /* Prevent content from exceeding the screen width */
+  box-sizing: border-box; /* Include padding in the width */
+  width: 100%; /* Ensure it doesn't overflow */
+  max-width: 100%; /* Prevent content from exceeding the screen width */
 }
 
 .sidebar h2 {
   text-align: center;
-  font-family: 'Great Vibes', cursive;
+  font-family: "Great Vibes", cursive;
   font-size: 38px; /* Increased font size */
   font-weight: bold;
   color: white; /* White color for "Arman Salon" */
   margin-bottom: 45px;
-  
-  }
+}
 
-  .sidebar div {
-    flex-grow: 1; /* Allow this section to grow */
-    display: flex;
-    flex-direction: column;
-  }
+.sidebar div {
+  flex-grow: 1; /* Allow this section to grow */
+  display: flex;
+  flex-direction: column;
+}
 
-  .sidebar a {
+.sidebar a {
   display: flex;
   justify-content: center; /* Center text horizontally */
   align-items: center; /* Center text vertically */
   margin: 15px 20px; /* Increased margin to add more spacing between links */
   padding: 18px; /* Increased padding for better space */
   background-color: #fff5f5;
-  color: #CC3A3A;
+  color: #cc3a3a;
   text-decoration: none;
   font-weight: bold;
-  border-left: 5px solid #FF5B5B;
+  border-left: 5px solid #ff5b5b;
   border-radius: 10px;
   text-align: center; /* Ensures the text is centered */
   font-size: 18px; /* Button text size */
   height: 60px; /* Fixed height for consistency */
-  }
+}
 
-  .sidebar a:hover {
-    background-color: #f1c0c0;
-  }
+.sidebar a:hover {
+  background-color: #f1c0c0;
+}
 
 /* Modal Overlay */
 #modalOverlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    z-index: 999;
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 999;
 }
 
 #editModal input {
-    border-color: #fbb9b9; /* Change the border color to red */
+  border-color: #fbb9b9; /* Change the border color to red */
 }
 
-#editModal input, select {
-    border: 2px solid #fbb9b9;
-    outline: none; /* removes default blue outline */
-    box-shadow: none; /* removes any shadow */
-    background-color: white; /* optional: make sure bg is clean */
+#editModal input,
+select {
+  border: 2px solid #fbb9b9;
+  outline: none; /* removes default blue outline */
+  box-shadow: none; /* removes any shadow */
+  background-color: white; /* optional: make sure bg is clean */
 
-    padding: 8px 10px; /* Increase padding for larger size */
-    font-size: 15px; /* Increase font size */
-    border-radius: 5px; /* Rounded corners */
-    width: 100%; /* Ensure full width */
-    margin: px 0; /* Add spacing between fields */
+  padding: 8px 10px; /* Increase padding for larger size */
+  font-size: 15px; /* Increase font size */
+  border-radius: 5px; /* Rounded corners */
+  width: 100%; /* Ensure full width */
+  margin: px 0; /* Add spacing between fields */
 }
 
 #editModal input:focus {
-    border-color: #ff5b5b;
-    box-shadow: none; /* remove browser glow */
-    outline: none;
+  border-color: #ff5b5b;
+  box-shadow: none; /* remove browser glow */
+  outline: none;
 }
 
-.form-column label{
-    font-weight: bold;
+.form-column label {
+  font-weight: bold;
 }
 
 #editModal button {
-    background-color: #ff5b5b; /* Red background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    padding: 10px 20px; /* Add padding for better spacing */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 14px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  background-color: #ff5b5b; /* Red background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Add padding for better spacing */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 14px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 /* Hover effect for buttons */
 #editModal button:hover {
-    background-color: #cc3a3a; /* Darker red on hover */
+  background-color: #cc3a3a; /* Darker red on hover */
 }
 
 h3 {
-    margin: 0;
-    padding: 0;
-    color: #ff5b5b;
-    text-align: center;
-    font-size: 25px;
+  margin: 0;
+  padding: 0;
+  color: #ff5b5b;
+  text-align: center;
+  font-size: 25px;
 }
 
 /* Modal Popup */
 #editModal {
-    /*display: block !important;*/
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 600px;
-    max-width: 90%;
+  /*display: block !important;*/
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 600px;
+  max-width: 90%;
 }
 
 /* Close Button */
 #editModal button {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
 /* Form Container */
 .form-container {
-    display: flex;
-    gap: 20px; /* Add spacing between the two columns */
+  display: flex;
+  gap: 20px; /* Add spacing between the two columns */
 }
 
 /* Form Columns */
 .form-column {
-    flex: 1; /* Each column takes up equal space */
+  flex: 1; /* Each column takes up equal space */
 }
 
 /* Buttons Row */
 .form-buttons {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 /* Calendar background */
 .flatpickr-calendar {
-    background-color: #fbbebe;
-    border: none;
-    border-radius: 10px;
-    box-shadow: none;
-    font-family: "Segoe UI", sans-serif;
+  background-color: #fbbebe;
+  border: none;
+  border-radius: 10px;
+  box-shadow: none;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* Calendar header (month) */
 .flatpickr-month {
-    background-color: transparent;
-    color: black;
-    font-weight: 700 !important;
-    padding: 0px;
-    border-radius: 10px 10px 0 0;
+  background-color: transparent;
+  color: black;
+  font-weight: 700 !important;
+  padding: 0px;
+  border-radius: 10px 10px 0 0;
 }
 
 /* Weekday labels (Mo, Tu, etc.) */
 .flatpickr-weekday {
-    color: black;
-    font-weight: bold;
-    font-size: 14px;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 /* Day cells */
 .flatpickr-day {
-    color: #333;
-    font-size: 14px;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    margin: 2px;
-    position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  color: #333;
+  font-size: 14px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  margin: 2px;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Past/future days (not selected) */
 .flatpickr-day.flatpickr-disabled,
 .flatpickr-day.prevMonthDay,
 .flatpickr-day.nextMonthDay {
-    color: #999 !important;
-    cursor: not-allowed;
+  color: #999 !important;
+  cursor: not-allowed;
 }
 
 /* Hover effect */
 .flatpickr-day:hover {
-    background-color: #ff9a9a;
-    color: white;
+  background-color: #ff9a9a;
+  color: white;
 }
 
 /* Selected day style - white circle with better spacing */
 .flatpickr-day.selected {
-    border: 2px solid #ff5b5b !important;  /* Add red border */
-    background-color: white !important;
-    color: #000 !important;
-    font-weight: bold;
-    position: relative;
-    line-height: 28px; /* slightly less to give space below */
-    height: 36px;
-    width: 36px;
+  border: 2px solid #ff5b5b !important; /* Add red border */
+  background-color: white !important;
+  color: #000 !important;
+  font-weight: bold;
+  position: relative;
+  line-height: 28px; /* slightly less to give space below */
+  height: 36px;
+  width: 36px;
 }
 
 /* Red dot below the number */
 .flatpickr-day.selected::after {
-    content: "";
-    position: absolute;
-    bottom: 4px; /* lowered a bit */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: #ff5b5b;
-    border-radius: 50%;
-    z-index: 1;
+  content: "";
+  position: absolute;
+  bottom: 4px; /* lowered a bit */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #ff5b5b;
+  border-radius: 50%;
+  z-index: 1;
+}
+/* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content container */
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Close button styling */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Heading style */
+.modal-content h3 {
+  margin-top: 0;
+  color: #f35b53;
+}
+
+/* Paragraph style */
+.modal-content p {
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+/* Form button styling */
+.modal-content button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Logout (confirm) button */
+.modal-content button[type="submit"] {
+  background-color: #f35b53;
+  color: #fff;
+}
+
+/* Cancel button */
+.modal-content button.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Blur effect for background container when modal is active */
+.blur {
+  filter: blur(4px);
 }
