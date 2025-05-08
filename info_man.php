@@ -484,15 +484,15 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <!-- Logout Modal Markup -->
-<div id="logoutModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3>Confirm Logout</h3>
-        <form method="POST" action="log_out.php">
-            <p>Are you sure you want to logout?</p>
-            <button type="submit" name="confirm_logout">Logout</button>
-            <button type="button" class="cancel-btn">Cancel</button>
-        </form>
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Confirm Logout</h3>
+            <form method="POST" action="log_out.php">
+                <p>Are you sure you want to logout?</p>
+                <button type="submit" name="confirm_logout">Logout</button>
+                <button type="button" class="cancel-btn">Cancel</button>
+            </form>
     </div>
 </div>
 </body>
