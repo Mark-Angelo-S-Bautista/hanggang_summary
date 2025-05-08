@@ -1,12 +1,39 @@
 <?php
 require "form/form.view.php";
 require "config.session.php";
+require "database.php";
+
+// Query for the settings options from the database
+$query = "SELECT option_type, option_value 
+          FROM options 
+          WHERE option_type IN ('times', 'hairstylists', 'services')";
+$stmt = $pdo->query($query);
+
+// Initialize options arrays
+$options = [
+    'times' => [],
+    'hairstylists' => [],
+    'services' => []
+];
+
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    // Instead of replacing, we add each option value to the array.
+    $value = trim($row['option_value']);
+    $options[$row['option_type']][] = $value;
+}
+
+// Partition times into Morning and Afternoon based on "AM" and "PM"
+$morning = array_filter($options['times'], function($time) {
+    return strpos($time, 'AM') !== false;
+});
+$afternoon = array_filter($options['times'], function($time) {
+    return strpos($time, 'PM') !== false;
+});
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment</title>
     <link rel="stylesheet" href="styles/form_styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
@@ -24,9 +51,9 @@ require "config.session.php";
             stylists.forEach(stylist => stylist.classList.remove('selected')); // Remove 'selected' class from all stylists
             event.target.classList.add('selected'); // Add 'selected' class to the clicked stylist
         }
-        // para dun sa stylist para makuha yung data
+        // Gather stylist data
         function selectStylist(name) {
-        document.getElementById('stylist').value = name;
+            document.getElementById('stylist').value = name;
         }
         function setTime(time) {
             document.getElementById('selected_time').value = time;
@@ -38,14 +65,14 @@ require "config.session.php";
         <div class="header">
             <img src="img/logo.png" alt="Logo">
             <h1>Arman Salon Appointments</h1>
-            </div>
-            <div class="container">
+        </div>
+        <div class="container">
             <div class="form-header">
                 Fill the Form to set your Appointment
             </div>
-                <p>
-                    <?php signup_errors(); ?>
-                </p>
+            <p>
+                <?php signup_errors(); ?>
+            </p>
             <div class="form-section">
                 <div class="calendar">
                     <h3>Select Date</h3>
@@ -54,17 +81,15 @@ require "config.session.php";
                 <div class="time-section">
                     <h3>Morning</h3>
                     <div class="time-buttons" onclick="handleButtonClick('time-buttons', event)">
-                        <button type="button" onclick="setTime('9:00 AM')">9:00 AM</button>
-                        <button type="button" onclick="setTime('10:00 AM')">10:00 AM</button>
-                        <button type="button" onclick="setTime('11:00 AM')">11:00 AM</button>
+                        <?php foreach ($morning as $time): ?>
+                            <button type="button" onclick="setTime('<?php echo htmlspecialchars($time); ?>')"><?php echo htmlspecialchars($time); ?></button>
+                        <?php endforeach; ?>
                     </div>
                     <h3>Afternoon</h3>
                     <div class="time-buttons" onclick="handleButtonClick('time-buttons', event)">
-                        <button type="button" onclick="setTime('1:00 PM')">1:00 PM</button>
-                        <button type="button" onclick="setTime('2:00 PM')">2:00 PM</button>
-                        <button type="button" onclick="setTime('3:00 PM')">3:00 PM</button>
-                        <button type="button" onclick="setTime('4:00 PM')">4:00 PM</button>
-                        <button type="button" onclick="setTime('5:00 PM')">5:00 PM</button>
+                        <?php foreach ($afternoon as $time): ?>
+                            <button type="button" onclick="setTime('<?php echo htmlspecialchars($time); ?>')"><?php echo htmlspecialchars($time); ?></button>
+                        <?php endforeach; ?>
                     </div>
                     <input type="hidden" name="selected_time" id="selected_time">
                 </div>
@@ -73,48 +98,37 @@ require "config.session.php";
                 <div class="stylists">
                     <h3>Choose Hair Stylist</h3>
                     <input type="hidden" name="stylist" id="stylist">
-                    <div class="stylist">
-                        <img src="img/stylist1.png" alt="Stylist 1" onclick="handleStylistClick(event); selectStylist('Jasmine')">
-                        <p>Jasmine</p>
-                    </div>
-                    <div class="stylist">
-                        <img src="img/stylist2.png" alt="Stylist 2" onclick="handleStylistClick(event); selectStylist('Joenel')">
-                        <p>Joenel</p>
-                    </div>
-                    <div class="stylist">
-                        <img src="img/stylist3.png" alt="Stylist 3" onclick="handleStylistClick(event); selectStylist('Mark')">
-                        <p>Mark</p>
-                    </div>
+                    <?php foreach ($options['hairstylists'] as $stylist): ?>
+                        <div class="stylist">
+                            <img src="img/stylist_default.png" alt="<?php echo htmlspecialchars($stylist); ?>" onclick="handleStylistClick(event); selectStylist('<?php echo addslashes(htmlspecialchars($stylist)); ?>')">
+                            <p><?php echo htmlspecialchars($stylist); ?></p>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 <div class="service">
                     <h3>Choose Service</h3>
                     <select name="selected_service">
-                        <option value="Hair Spa">Hair Spa - $40</option>
-                        <option value="Shampoo">Shampoo - $20</option>
+                        <?php foreach ($options['services'] as $service): ?>
+                            <option value="<?php echo htmlspecialchars($service); ?>"><?php echo htmlspecialchars($service); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
             <!-- New User Inputs -->
             <div class="user-info">
-    <h3>User Information</h3>
-    <div class="user-inputs">
-        <input type="text" name="username" placeholder="Full Name" required>
-
-        <!-- Valid email input -->
-        <input type="email" name="email" placeholder="Email Address" required>
-
-        <!-- Phone must be exactly 11 digits -->
-        <input type="tel" name="phoneNum" placeholder="Phone Number" pattern="\d{11}" maxlength="11" title="Phone number must be exactly 11 digits" required>
-
-        <select name="gender" required>
-            <option value="" disabled selected>Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Prefer not to say">Prefer not to say</option>
-        </select>
-    </div>
-</div>
-
+                <h3>User Information</h3>
+                <div class="user-inputs">
+                    <input type="text" name="username" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="tel" name="phoneNum" placeholder="Phone Number" pattern="\d{11}" maxlength="11" title="Phone number must be exactly 11 digits" required>
+                    <select name="gender" required>
+                        <option value="" disabled selected>Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+            </div>
             <div class="book-button">
                 <button type="submit">Book Appointment</button>
             </div>
@@ -125,27 +139,25 @@ require "config.session.php";
         </div>
     </form>
     <script>
-document.querySelector("form").addEventListener("submit", function(e) {
-    const email = document.querySelector('input[name="email"]').value.trim();
-    const phone = document.querySelector('input[name="phoneNum"]').value.trim();
+        document.querySelector("form").addEventListener("submit", function(e) {
+            const email = document.querySelector('input[name="email"]').value.trim();
+            const phone = document.querySelector('input[name="phoneNum"]').value.trim();
 
-    // Strict email pattern: something@something.something (e.g., user@gmail.com)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            // Strict email pattern: something@something.something (e.g., user@gmail.com)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            // Phone: exactly 11 digits
+            const phoneRegex = /^\d{11}$/;
 
-    // Phone: exactly 11 digits
-    const phoneRegex = /^\d{11}$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address (e.g., user@gmail.com).");
+                e.preventDefault();
+            }
 
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address (e.g., user@gmail.com).");
-        e.preventDefault();
-    }
-
-    if (!phoneRegex.test(phone)) {
-        alert("Phone number must be exactly 11 digits.");
-        e.preventDefault();
-    }
-});
-</script>
-
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 11 digits.");
+                e.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>
