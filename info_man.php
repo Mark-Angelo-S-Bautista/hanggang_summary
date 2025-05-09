@@ -33,6 +33,8 @@ while ($row = $serviceResult->fetch_assoc()) {
     $services[] = $row['option_value'];
 }
 
+//$currentPage = basename($_SERVER['PHP_SELF']); // Get the current page filename
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $edit_id = $_POST['edit_id'];
 
@@ -186,7 +188,7 @@ $result = $stmt->get_result();
         <div>
             <h2 class="as-heading">Arman Salon</h2>
             <a href="dashboard.php">Dashboard</a>
-            <a href="info_man.php">Information Management</a>
+            <a href="info_man.php">Transactions</a>
             <a href="reports.php">Reports</a>
             <a href="settings.php">Settings</a>
         </div>
@@ -558,4 +560,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </body>
 </html>
-````
+``````

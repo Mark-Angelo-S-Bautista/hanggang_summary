@@ -13,7 +13,7 @@ body {
 }
 
 .header-wrapper {
-  background-color: #f0e1e1;
+  /*background-color: #ff5b5b !important;*/
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -77,13 +77,19 @@ body {
 }
 
 .header-wrapper {
-  background-color: #f0e1e1;
+  /*background-color: #f0e1e1;*/
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   width: 100%; /* Full width */
   box-sizing: border-box; /* Include padding in width */
+  color: #ff5b5b;
+  -webkit-text-stroke: 0.2px black;
+}
+
+#currentDayTime{
+  color: #ff5b5b;
 }
 
 .header-wrapper h2 {
@@ -248,6 +254,7 @@ th {
 .sidebar a:hover {
   background-color: #f1c0c0;
 }
+
 
 /* Modal Overlay */
 #modalOverlay {

@@ -70,11 +70,12 @@ $servicesOptions = getOptions($pdo, 'services');
     <style>
         /* Styles for the settings CRUD interface */
         .settings_form_container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 800px; /* Limit the width of the form */
+            width: 100%; /* Allow it to shrink on smaller screens */
             background: #fff;
             padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
         }
         .settings_form_container h2 {
             text-align: center;
