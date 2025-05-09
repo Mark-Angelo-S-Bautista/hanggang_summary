@@ -156,7 +156,7 @@ try {
             <div>
                 <h2 class="as-heading">Arman Salon</h2>
                 <a href="dashboard.php">Dashboard</a>
-                <a href="info_man.php">Information Management</a>
+                <a href="info_man.php">Transactions</a>
                 <a href="reports.php">Reports</a>
                 <a href="settings.php">Settings</a>
             </div>

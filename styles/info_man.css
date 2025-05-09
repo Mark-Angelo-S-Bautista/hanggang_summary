@@ -88,7 +88,7 @@ body {
   -webkit-text-stroke: 0.2px black;
 }
 
-#currentDayTime{
+#currentDayTime {
   color: #ff5b5b;
 }
 
@@ -139,9 +139,10 @@ td {
   border-bottom: 1px solid #ddd; /* Add horizontal lines between rows */
 }
 
-td a.edit-btn, td a.delete-btn {
+td a.edit-btn,
+td a.delete-btn {
   display: inline-block; /* Ensure buttons stay inline */
-  margin: 3px;  /*Add spacing between buttons */
+  margin: 3px; /*Add spacing between buttons */
   white-space: nowrap; /* Prevent buttons from wrapping */
 }
 
@@ -254,7 +255,6 @@ th {
 .sidebar a:hover {
   background-color: #f1c0c0;
 }
-
 
 /* Modal Overlay */
 #modalOverlay {
