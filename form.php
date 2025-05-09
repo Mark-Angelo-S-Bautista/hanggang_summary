@@ -37,6 +37,8 @@ $afternoon = array_filter($options['times'], function($time) {
     <title>Appointment</title>
     <link rel="stylesheet" href="styles/form_styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         // Function to handle button selection
         function handleButtonClick(buttonGroupClass, event) {
@@ -59,6 +61,19 @@ $afternoon = array_filter($options['times'], function($time) {
             document.getElementById('selected_time').value = time;
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            flatpickr("#selected_date", {
+                dateFormat: "m/d/Y", // Format to match your database
+                minDate: "today", // Prevent selecting past dates
+                defaultDate: null,
+                disableMobile: true, // Force the custom calendar on mobile devices
+                locale: {
+                    firstDayOfWeek: 1 // Start the week on Monday
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <form action="form/formhandler.php" method="POST">
@@ -76,7 +91,17 @@ $afternoon = array_filter($options['times'], function($time) {
             <div class="form-section">
                 <div class="calendar">
                     <h3>Select Date</h3>
-                    <input type="date" name="selected_date">
+                    <div class="date-container">
+                        <input type="text" name="selected_date" id="selected_date" placeholder="mm/dd/yyyy">
+                        <span class="calendar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </span>
+                    </div>
                 </div>
                 <div class="time-section">
                     <h3>Morning</h3>

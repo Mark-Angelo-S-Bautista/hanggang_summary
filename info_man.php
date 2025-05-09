@@ -18,6 +18,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Fetch hairstylists and services options
+$stylistQuery = "SELECT option_value FROM options WHERE option_type = 'hairstylists'";
+$stylistResult = $conn->query($stylistQuery);
+$hairstylists = [];
+while ($row = $stylistResult->fetch_assoc()) {
+    $hairstylists[] = $row['option_value'];
+}
+
+$serviceQuery = "SELECT option_value FROM options WHERE option_type = 'services'";
+$serviceResult = $conn->query($serviceQuery);
+$services = [];
+while ($row = $serviceResult->fetch_assoc()) {
+    $services[] = $row['option_value'];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $edit_id = $_POST['edit_id'];
 
@@ -273,8 +288,25 @@ $result = $stmt->get_result();
                         <option value="05:00 PM">5:00 PM</option>
                     </select>
                 </p>
-                <p><label>Stylist:</label><br><input type="text" name="edit_stylist" id="edit_stylist"></p>
-                <p><label>Selected Service:</label><br><input type="text" name="edit_selected_service" id="edit_selected_service"></p>
+                <!-- Stylist Dropdown -->
+                <p>
+                    <label>Stylist:</label><br>
+                    <select name="edit_stylist" id="edit_stylist">
+                        <?php foreach ($hairstylists as $stylist): ?>
+                            <option value="<?php echo htmlspecialchars($stylist); ?>"><?php echo htmlspecialchars($stylist); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </p>
+
+                <!-- Selected Service Dropdown -->
+                <p>
+                    <label>Selected Service:</label><br>
+                    <select name="edit_selected_service" id="edit_selected_service">
+                        <?php foreach ($services as $service): ?>
+                            <option value="<?php echo htmlspecialchars($service); ?>"><?php echo htmlspecialchars($service); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </p>
             </div>
 
             <!-- Right Side -->
@@ -315,12 +347,29 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_selected_date').value = selected_date;
     document.getElementById('edit_selected_time').value = selected_time;
-    document.getElementById('edit_stylist').value = stylist;
-    document.getElementById('edit_selected_service').value = selected_service;
     document.getElementById('edit_username').value = username;
     document.getElementById('edit_email').value = email;
     document.getElementById('edit_phoneNum').value = phoneNum;
 
+    // Set the selected value for the stylist dropdown
+    const stylistDropdown = document.getElementById('edit_stylist');
+    for (let i = 0; i < stylistDropdown.options.length; i++) {
+        if (stylistDropdown.options[i].value === stylist) {
+            stylistDropdown.selectedIndex = i;
+            break;
+        }
+    }
+
+    // Set the selected value for the service dropdown
+    const serviceDropdown = document.getElementById('edit_selected_service');
+    for (let i = 0; i < serviceDropdown.options.length; i++) {
+        if (serviceDropdown.options[i].value === selected_service) {
+            serviceDropdown.selectedIndex = i;
+            break;
+        }
+    }
+
+    // Set the selected value for the gender dropdown
     const genderSelect = document.getElementById('edit_gender');
     for (let i = 0; i < genderSelect.options.length; i++) {
         if (genderSelect.options[i].value.toLowerCase() === gender.toLowerCase()) {
@@ -329,6 +378,7 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
         }
     }
 
+    // Set the selected value for the status dropdown
     const statusSelect = document.getElementById('edit_status');
     for (let i = 0; i < statusSelect.options.length; i++) {
         if (statusSelect.options[i].value.toLowerCase() === status.trim().toLowerCase()) {
@@ -404,37 +454,48 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function validateForm() {
-    const requiredFields = [
-        'edit_selected_date',
-        'edit_selected_time',
-        'edit_stylist',
-        'edit_selected_service',
-        'edit_username',
-        'edit_email',
-        'edit_phoneNum',
-        'edit_gender',
-        'edit_status'
-    ];
+document.addEventListener('DOMContentLoaded', function () {
+    const phoneInput = document.getElementById('edit_phoneNum');
 
-    let isValid = true;
-
-    requiredFields.forEach((fieldId) => {
-        const field = document.getElementById(fieldId);
-        if (!field.value.trim()) {
-            field.style.borderColor = 'red'; // Highlight the missing field
-            isValid = false;
-        } else {
-            field.style.borderColor = ''; // Reset the border color if valid
+    phoneInput.addEventListener('input', function () {
+        // Allow only 11 digits
+        if (phoneInput.value.length > 11) {
+            phoneInput.value = phoneInput.value.slice(0, 11); // Trim to 11 digits
         }
     });
 
-    if (!isValid) {
-        alert('Please fill out all required fields.');
+    phoneInput.addEventListener('keypress', function (event) {
+        // Prevent non-numeric input
+        if (!/[0-9]/.test(event.key)) {
+            event.preventDefault();
+        }
+    });
+});
+
+function validateForm() {
+    const email = document.getElementById('edit_email').value.trim();
+    const phone = document.getElementById('edit_phoneNum').value.trim();
+
+    // Strict email pattern: something@something.something (e.g., user@gmail.com)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    // Phone: exactly 11 digits
+    const phoneRegex = /^\d{11}$/;
+
+    let isValid = true;
+
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address (e.g., user@gmail.com).");
+        isValid = false;
     }
 
-    return isValid; // Return true if all fields are valid, false otherwise
+    if (!phoneRegex.test(phone)) {
+        alert("Phone number must be exactly 11 digits.");
+        isValid = false;
+    }
+
+    return isValid; // Return true if both validations pass
 }
+
 document.addEventListener("DOMContentLoaded", function() {
     var logoutBtn = document.getElementById('logoutBtn');
     var logoutModal = document.getElementById('logoutModal');
@@ -497,3 +558,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </body>
 </html>
+````

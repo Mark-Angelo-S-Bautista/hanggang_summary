@@ -214,3 +214,123 @@ p {
   border-color: #e35b53;
   box-shadow: 0 0 5px rgba(243, 91, 83, 0.5); /* Glow effect on focus */
 }
+
+/* Calendar container */
+.flatpickr-calendar {
+    background-color: #fbbebe; /* Light red background */
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Calendar header (month) */
+.flatpickr-month {
+    background-color: transparent;
+    color: black;
+    font-weight: 700 !important;
+    padding: 0px;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Weekday labels (Mo, Tu, etc.) */
+.flatpickr-weekday {
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Day cells */
+.flatpickr-day {
+    color: #333;
+    font-size: 14px;
+    border-radius: 50%; /* Circular day cells */
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    margin: 2px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect */
+.flatpickr-day:hover {
+    background-color: #ff9a9a;
+    color: white;
+}
+
+/* Selected day style */
+.flatpickr-day.selected {
+    border: 2px solid #ff5b5b !important; /* Add red border */
+    background-color: white !important;
+    color: #000 !important;
+    font-weight: bold;
+    position: relative;
+    line-height: 28px; /* Slightly less to give space below */
+    height: 36px;
+    width: 36px;
+}
+
+/* Red dot below the number */
+.flatpickr-day.selected::after {
+    content: "";
+    position: absolute;
+    bottom: 4px; /* Lowered a bit */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #ff5b5b;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Center the date container */
+.date-container {
+    position: relative;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the input box horizontally */
+    align-items: center; /* Center the input box vertically */
+    margin: 0 auto; /* Center the container itself */
+    width: 150px; /* Set a fixed width for the container */
+}
+
+/* Date input field */
+#selected_date {
+    padding: 10px 40px 10px 10px; /* Add padding to make space for the icon */
+    border: 1px solid #f35b53;
+    border-radius: 10px;
+    font-size: 14px;
+    width: 100%; /* Full width of the container */
+    text-align: center;
+    background: linear-gradient(to bottom, #fff, #f8f8f8);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+#selected_date:hover {
+    background: linear-gradient(to bottom, #f35b53, #e35b53);
+    color: #fff;
+}
+
+/* Focus effect */
+#selected_date:focus {
+    outline: none;
+    border-color: #e35b53;
+    box-shadow: 0 0 5px rgba(243, 91, 83, 0.5);
+}
+
+/* Calendar icon */
+.calendar-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Align the icon to the right inside the input field */
+    transform: translateY(-50%);
+    width: 18px; /* Match the SVG size */
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Prevent the icon from blocking input clicks */
+}
