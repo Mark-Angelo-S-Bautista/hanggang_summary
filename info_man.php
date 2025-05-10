@@ -33,12 +33,16 @@ while ($row = $serviceResult->fetch_assoc()) {
     $services[] = $row['option_value'];
 }
 
-$timeQuery = "SELECT option_value FROM options WHERE option_type = 'times' ORDER BY id ASC";
+$timeQuery = "SELECT option_value FROM options WHERE option_type = 'times' ORDER BY option_value ASC";
 $timeResult = $conn->query($timeQuery);
 $available_times = [];
 while ($row = $timeResult->fetch_assoc()) {
     $available_times[] = $row['option_value'];
 }
+// If you want to be sure, sort using PHP as well:
+usort($available_times, function($a, $b) {
+    return strtotime($a) - strtotime($b);
+});
 
 //$currentPage = basename($_SERVER['PHP_SELF']); // Get the current page filename
 
@@ -216,8 +220,8 @@ $result = $stmt->get_result();
 
         <div class="table-container">
         <table>
+            <thead>
             <tr>
-                <th>ID</th>
                 <th>Selected Date</th>
                 <th>Selected Time</th>
                 <th>Stylist</th>
@@ -229,7 +233,8 @@ $result = $stmt->get_result();
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
-
+            </thead>
+            <tbody>
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -246,7 +251,6 @@ $result = $stmt->get_result();
                     $status = htmlspecialchars($row["status"]);
 
                     echo "<tr>";
-                    echo "<td>$id</td>";
                     echo "<td>$selected_date</td>";
                     echo "<td>$selected_time</td>";
                     echo "<td>$stylist</td>";
@@ -256,19 +260,27 @@ $result = $stmt->get_result();
                     echo "<td>$phoneNum</td>";
                     echo "<td>$gender</td>";
                     if (strtolower($status) === 'in session') {
-                        echo "<td><span class='status-in-session'>$status</span></td>";
+                        echo "<td><span class='status-in-session'><span class='dot'></span>$status</span></td>";
+                    } elseif (strtolower($status) === 'completed') {
+                        echo "<td><span class='status-completed'>$status</span></td>";
+                    } elseif (strtolower($status) === 'cancelled') {
+                        echo "<td><span class='status-cancelled'>$status</span></td>";
                     } else {
                         echo "<td>$status</td>";
                     }
                     
                     echo "<td>
-                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$raw_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
+                      <span class='action-buttons'>
+                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$raw_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a>
+                        <span class='action-sep'>|</span>
                         <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
-                      </td>";
+                      </span>
+                    </td>";
                     echo "</tr>";
                 }
             }
             ?>
+            </tbody>
         </table>
         <div class="table-container">
     </div>

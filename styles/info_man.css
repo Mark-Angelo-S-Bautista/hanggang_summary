@@ -78,12 +78,49 @@ body {
 .status-in-session {
   color: #4caf50;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.status-in-session .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #4caf50;
+  vertical-align: middle;
+}
+
+.status-completed {
+  color: #4caf50;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.status-cancelled {
+  color: #e53935;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+thead th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+thead th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 table {
+  table-layout: auto;
   margin: 20px auto; /* centers the table horizontally */
   border-collapse: collapse;
   background-color: white; /* White background for the table */
+  border-radius: 5%;
   margin: 20px auto; /* Center the table horizontally */
 }
 
@@ -117,7 +154,7 @@ td {
 td a.edit-btn,
 td a.delete-btn {
   display: inline-block; /* Ensure buttons stay inline */
-  margin: 3px; /*Add spacing between buttons */
+  margin: 2px; /*Add spacing between buttons */
   white-space: nowrap; /* Prevent buttons from wrapping */
 }
 
@@ -159,6 +196,29 @@ th {
 .status-in-session {
   color: #4caf50;
   font-weight: bold;
+}
+
+th:nth-child(2),
+th:nth-child(3),
+td:nth-child(2),
+td:nth-child(3) {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* Give more space to Status and Actions columns */
+th:nth-child(10),
+td:nth-child(10) {
+  /*min-width: 10px;    Adjust as needed */
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+th:nth-child(11),
+td:nth-child(11) {
+  min-width: 150px;   /* Adjust as needed */
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* Ensure the container takes up the full viewport height */
@@ -277,6 +337,20 @@ select {
 
 .form-column label {
   font-weight: bold;
+}
+
+.action-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: px; /* space between buttons and | */
+  white-space: nowrap;
+}
+
+.action-sep {
+  color: #bbb;
+  font-weight: bold;
+  padding: 0 4px;
+  user-select: none;
 }
 
 #editModal button {
