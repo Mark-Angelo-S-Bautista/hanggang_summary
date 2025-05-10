@@ -63,10 +63,10 @@ $servicesOptions = getOptions($pdo, 'services');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Arman Salon</title>
+    <link rel="stylesheet" href="styles/reports_styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <!-- Using Flatpickr stylesheet if needed -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="styles/reports_styles.css">
     <style>
         /* Styles for the settings CRUD interface */
         .settings_form_container {
@@ -149,6 +149,14 @@ $servicesOptions = getOptions($pdo, 'services');
             font-weight: bold;
             cursor: pointer;
         }
+        .sidebar a.active {
+            background-color: #e04848; /* Darker red for active */
+            color: #fff;
+            border-left: 5px solid #fff;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255,91,91,0.15); /* Optional: subtle shadow */
+            transition: background 0.2s;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -196,7 +204,7 @@ $servicesOptions = getOptions($pdo, 'services');
                 <a href="dashboard.php">Dashboard</a>
                 <a href="info_man.php">Transactions</a>
                 <a href="reports.php">Reports</a>
-                <a href="settings.php">Settings</a>
+                <a href="settings.php" class="active">Settings</a>
             </div>
             <div class="logout-link">
                 <a href="log_out.php" id="logoutBtn">Logout</a>

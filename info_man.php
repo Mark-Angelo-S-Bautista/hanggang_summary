@@ -188,7 +188,7 @@ $result = $stmt->get_result();
         <div>
             <h2 class="as-heading">Arman Salon</h2>
             <a href="dashboard.php">Dashboard</a>
-            <a href="info_man.php">Transactions</a>
+            <a href="info_man.php" class="active">Transactions</a>
             <a href="reports.php">Reports</a>
             <a href="settings.php">Settings</a>
         </div>
@@ -207,6 +207,7 @@ $result = $stmt->get_result();
             </div>
         </div>
 
+        <div class="table-container">
         <table>
             <tr>
                 <th>ID</th>
@@ -262,6 +263,7 @@ $result = $stmt->get_result();
             }
             ?>
         </table>
+        <div class="table-container">
     </div>
 </div>
 </div>
@@ -560,4 +562,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </body>
 </html>
-``````

@@ -374,6 +374,15 @@ document.addEventListener("DOMContentLoaded", function() {
 .blur {
   filter: blur(4px);
 }
+
+.sidebar a.active {
+  background-color: #e04848; /* Darker red for active */
+  color: #fff;
+  border-left: 5px solid #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255,91,91,0.15); /* Optional: subtle shadow */
+  transition: background 0.2s;
+}
   </style>
 </head>
 <body>
@@ -381,7 +390,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="sidebar">
       <div>
         <h2>Arman Salon</h2>
-        <a href="dashboard.php">Dashboard</a>
+        <a href="dashboard.php" class="active">Dashboard</a>
         <a href="info_man.php">Transactions</a>
         <a href="reports.php">Reports</a>
         <a href="settings.php">Settings</a>

@@ -13,14 +13,18 @@ body {
 }
 
 .header-wrapper {
-  /*background-color: #ff5b5b !important;*/
+  background-color: white !important;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
+  margin: 20px auto;      /* Match the table-container margin */
+  width: 98% !important;             /* Match the table-container width */
+  border-radius: 8px;
   flex-wrap: wrap;
-  width: 100vw; /* Ensure it spans the full width */
-  box-sizing: border-box; /* Include padding in the width */
+  box-sizing: border-box; /* Ensure padding is included in width */
+  color: #ff5b5b;
+  /*-webkit-text-stroke: 0.2px black;*/
+  padding: 20px;          /* Keep padding for spacing inside */
 }
 
 .header-wrapper h2 {
@@ -39,7 +43,7 @@ body {
 
 .date-time .weekday-time {
   font-size: 0.9em;
-  color: #333;
+  color: #ff5b5b;
 }
 
 .edit-btn {
@@ -76,50 +80,21 @@ body {
   font-weight: bold;
 }
 
-.header-wrapper {
-  /*background-color: #f0e1e1;*/
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  width: 100%; /* Full width */
-  box-sizing: border-box; /* Include padding in width */
-  color: #ff5b5b;
-  -webkit-text-stroke: 0.2px black;
-}
-
-#currentDayTime {
-  color: #ff5b5b;
-}
-
-.header-wrapper h2 {
-  margin: 0;
-}
-
-.date-time {
-  text-align: right;
-  font-size: 20px;
-}
-
-.date-time .date {
-  font-weight: bold;
-}
-
-.date-time .weekday-time {
-  font-size: 0.9em;
-  color: #333;
-}
-
-.header-wrapper h2 {
-  font-size: 30px;
-}
-
 table {
   margin: 20px auto; /* centers the table horizontally */
   border-collapse: collapse;
   background-color: white; /* White background for the table */
   margin: 20px auto; /* Center the table horizontally */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+.table-container {
+  background-color: white;
+  padding: 10px;
+  max-height: 80vh; /* Adjust as needed */
+  overflow-y: auto;
+  margin: 20px auto;
+  width: 98%;
+  border-radius: 8px;
 }
 
 th {
@@ -209,8 +184,7 @@ th {
 /* Main content wrapper to prevent overflow */
 .main-content-wrapper {
   flex: 1; /* Take up the remaining space */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  overflow-y: auto; /* Allow vertical scrolling if needed */
+  overflow-y: hidden; /* Allow vertical scrolling if needed */
 }
 
 /* Main content styles */
@@ -254,6 +228,15 @@ th {
 
 .sidebar a:hover {
   background-color: #f1c0c0;
+}
+
+.sidebar a.active {
+  background-color: #e04848;
+  color: #fff;
+  border-left: 5px solid #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255,91,91,0.15); /* Optional: subtle shadow */
+  transition: background 0.2s;
 }
 
 /* Modal Overlay */

@@ -105,9 +105,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports - Arman Salon</title>
+    <link rel="stylesheet" href="styles/reports_styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="styles/reports_styles.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var logoutBtn = document.getElementById('logoutBtn');
@@ -157,7 +157,7 @@ try {
                 <h2 class="as-heading">Arman Salon</h2>
                 <a href="dashboard.php">Dashboard</a>
                 <a href="info_man.php">Transactions</a>
-                <a href="reports.php">Reports</a>
+                <a href="reports.php" class="active">Reports</a>
                 <a href="settings.php">Settings</a>
             </div>
             <div class="logout-link">
