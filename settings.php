@@ -70,7 +70,7 @@ $servicesOptions = getOptions($pdo, 'services');
     <style>
         /* Styles for the settings CRUD interface */
         .settings_form_container {
-            max-width: 800px; /* Limit the width of the form */
+            max-width: 500px; /* Limit the width of the form */
             width: 100%; /* Allow it to shrink on smaller screens */
             background: #fff;
             padding: 20px;
@@ -80,6 +80,22 @@ $servicesOptions = getOptions($pdo, 'services');
         .settings_form_container h2 {
             text-align: center;
             margin-bottom: 15px;
+        }
+        .settings_form_container a.delete-btn {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #ff5b5b;
+            color: #fff !important;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 5px;
+            transition: background 0.2s;
+        }
+        .settings_form_container a.delete-btn:hover {
+            background: #e04848;
+            color: #fff !important;
         }
         .option_section {
             margin-bottom: 30px;
@@ -157,6 +173,49 @@ $servicesOptions = getOptions($pdo, 'services');
             box-shadow: 0 2px 8px rgba(255,91,91,0.15); /* Optional: subtle shadow */
             transition: background 0.2s;
         }
+        /* Make the container a flex row */
+        .container {
+            display: flex;
+            min-height: 100vh;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* Sidebar stays fixed height and does not scroll */
+        .sidebar {
+            width: 250px;
+            background-color: #ff5b5b;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 0;
+            height: 100vh;
+            flex-shrink: 0;
+            position: sticky;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Main content scrolls vertically */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Only horizontal centering */
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            background: transparent;
+            padding: 30px 0;
+            box-sizing: border-box;
+        }
+        .settings_form_container th {
+            position: static !important;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -211,7 +270,7 @@ $servicesOptions = getOptions($pdo, 'services');
             </div>
         </div>
         <!-- Main Content -->
-        <div class="main_content">
+        <div class="main-content">
             <div class="settings_form_container">
                 <h2>Manage Form Options</h2>
                 <?php if (!empty($message)): ?>
@@ -239,7 +298,7 @@ $servicesOptions = getOptions($pdo, 'services');
                                 </form>
                             </td>
                             <td>
-                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" onclick="return confirm('Delete this time?');">Delete</a>
+                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this time?');">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -273,7 +332,7 @@ $servicesOptions = getOptions($pdo, 'services');
                                 </form>
                             </td>
                             <td>
-                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" onclick="return confirm('Delete this hairstylist?');">Delete</a>
+                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this hairstylist?');">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -307,7 +366,7 @@ $servicesOptions = getOptions($pdo, 'services');
                                 </form>
                             </td>
                             <td>
-                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" onclick="return confirm('Delete this service?');">Delete</a>
+                                <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this service?');">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
