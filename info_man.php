@@ -33,6 +33,13 @@ while ($row = $serviceResult->fetch_assoc()) {
     $services[] = $row['option_value'];
 }
 
+$timeQuery = "SELECT option_value FROM options WHERE option_type = 'times' ORDER BY id ASC";
+$timeResult = $conn->query($timeQuery);
+$available_times = [];
+while ($row = $timeResult->fetch_assoc()) {
+    $available_times[] = $row['option_value'];
+}
+
 //$currentPage = basename($_SERVER['PHP_SELF']); // Get the current page filename
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -255,7 +262,7 @@ $result = $stmt->get_result();
                     }
                     
                     echo "<td>
-                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
+                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$raw_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a> | 
                         <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
                       </td>";
                     echo "</tr>";
@@ -282,14 +289,9 @@ $result = $stmt->get_result();
                 <p><label>Selected Date:</label><br><input type="date" name="edit_selected_date" id="edit_selected_date"></p>
                 <p><label>Selected Time:</label><br>
                     <select name="edit_selected_time" id="edit_selected_time">
-                        <option value="09:00 AM">9:00 AM</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="01:00 PM">1:00 PM</option>
-                        <option value="02:00 PM">2:00 PM</option>
-                        <option value="03:00 PM">3:00 PM</option>
-                        <option value="04:00 PM">4:00 PM</option>
-                        <option value="05:00 PM">5:00 PM</option>
+                        <?php foreach ($available_times as $time): ?>
+                            <option value="<?php echo htmlspecialchars($time); ?>"><?php echo htmlspecialchars($time); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </p>
                 <!-- Stylist Dropdown -->
@@ -350,7 +352,6 @@ $result = $stmt->get_result();
 function openEditModal(id, selected_date, selected_time, stylist, selected_service, username, email, phoneNum, gender, status) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_selected_date').value = selected_date;
-    document.getElementById('edit_selected_time').value = selected_time;
     document.getElementById('edit_username').value = username;
     document.getElementById('edit_email').value = email;
     document.getElementById('edit_phoneNum').value = phoneNum;
@@ -387,6 +388,17 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
     for (let i = 0; i < statusSelect.options.length; i++) {
         if (statusSelect.options[i].value.toLowerCase() === status.trim().toLowerCase()) {
             statusSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    // Set the selected value for the time dropdown
+    const timeDropdown = document.getElementById('edit_selected_time');
+    for (let i = 0; i < timeDropdown.options.length; i++) {
+        if (
+            timeDropdown.options[i].value.trim().toLowerCase() === selected_time.trim().toLowerCase()
+        ) {
+            timeDropdown.selectedIndex = i;
             break;
         }
     }
