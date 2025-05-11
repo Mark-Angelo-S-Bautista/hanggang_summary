@@ -1,18 +1,8 @@
-<?php
-session_start(); // Start session at the very beginning
-
-// If user is already logged in, redirect them to dashboard
-if (isset($_SESSION['id'])) {
-    header("Location: dashboard.php");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Login - Arman Salon</title>
+  <title>Change Password - Arman Salon</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
     body {
@@ -41,7 +31,12 @@ if (isset($_SESSION['id'])) {
       margin-bottom: 10px;
       font-size: 42px;
     }
-    input[type="text"],
+    .form-container p.subtitle {
+      margin-top: -10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: #333;
+    }
     input[type="password"] {
       width: 100%;
       padding: 12px;
@@ -70,10 +65,15 @@ if (isset($_SESSION['id'])) {
       margin-top: 10px;
       margin-bottom: 10px;
     }
-    p {
-      margin-top: 20px;
+    .success-msg {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
     a {
+      display: inline-block;
+      margin-top: 20px;
       color: #FF5B5B;
       text-decoration: none;
     }
@@ -84,32 +84,38 @@ if (isset($_SESSION['id'])) {
 </head>
 <body>
 
-<form class="form-container" action="process_login.php" method="POST">
+<form class="form-container" action="process_change_password.php" method="POST">
   <h1>Arman Salon</h1>
-  <p>Admin Login</p>
+  <p class="subtitle">Change Admin Password</p>
 
+  <?php if (isset($_GET['msg'])): ?>
+    <p class="success-msg"><?php echo htmlspecialchars($_GET['msg']); ?></p>
+  <?php endif; ?>
   <?php if (isset($_GET['error'])): ?>
     <p class="error-msg"><?php echo htmlspecialchars($_GET['error']); ?></p>
   <?php endif; ?>
 
-  <input type="text" name="username" placeholder="Username" required>
-  <input type="password" name="psw" placeholder="Password" required>
-  <button type="submit">Login</button>
+  <input type="password" name="current_password" placeholder="Current Password" required>
+  <input type="password" name="new_password" placeholder="New Password" required>
+  <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
+  <button type="submit">Change Password</button>
 
-  <!-- New Change Password button -->
-  <button type="button" onclick="window.location.href='change_password.php'">Change Password</button>
-
-  <!-- Registration link removed since only 1 admin is allowed -->
+  <a href="admin_login.php">Back to Login</a>
 </form>
 
 <script>
-  // Optional: auto-hide error message after 3 seconds
   setTimeout(() => {
     const errorMsg = document.querySelector('.error-msg');
+    const successMsg = document.querySelector('.success-msg');
     if (errorMsg) {
       errorMsg.style.transition = 'opacity 1s ease-out';
       errorMsg.style.opacity = '0';
       setTimeout(() => { errorMsg.style.display = 'none'; }, 1000);
+    }
+    if (successMsg) {
+      successMsg.style.transition = 'opacity 1s ease-out';
+      successMsg.style.opacity = '0';
+      setTimeout(() => { successMsg.style.display = 'none'; }, 1000);
     }
   }, 3000);
 </script>
