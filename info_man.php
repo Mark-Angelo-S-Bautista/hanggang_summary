@@ -78,13 +78,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $combinedDateTime = new DateTime($edit_selected_date . ' ' . $edit_selected_time);
         $currentDateTime = new DateTime();
 
-        // Reset status to "Scheduled" only if date/time changed, status wasn't manually changed, and new time is in the future
+        // Reset status to "Scheduled" if date/time changed, status wasn't manually changed, and new time + 15min is >= now
         if (
             ($edit_selected_date !== $current_date || $edit_selected_time !== $current_time) &&
-            $edit_status === $current_status &&
-            $combinedDateTime > $currentDateTime
+            $edit_status === $current_status
         ) {
-            $edit_status = "Scheduled";
+            $graceDateTime = new DateTime($edit_selected_date . ' ' . $edit_selected_time);
+            $graceDateTime->modify('+15 minutes');
+            $currentDateTime = new DateTime();
+
+            if ($graceDateTime >= $currentDateTime) {
+                $edit_status = "Scheduled";
+            }
         }
 
         // Allow admin override from Cancelled to In Session
@@ -153,10 +158,11 @@ if (isset($_GET['id'])) {
 }
 
 date_default_timezone_set('Asia/Manila');
-$today = date('Y-m-d');
 $now = new DateTime();
 
-$sql = "SELECT * FROM form_info WHERE selected_date = ?";
+$today = date('Y-m-d');
+
+$sql = "SELECT * FROM form_info WHERE selected_date = ? ORDER BY STR_TO_DATE(selected_time, '%l:%i %p') ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $today);
 $stmt->execute();
@@ -219,6 +225,16 @@ $result = $stmt->get_result();
         </div>
 
         <div class="table-container">
+        <div class="search-wrapper">
+            <span class="search-icon">
+                <!-- You can use an SVG for crisp icon -->
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <circle cx="9" cy="9" r="7" stroke="#ff5b5b" stroke-width="2"/>
+                    <line x1="14.4142" y1="14" x2="18" y2="17.5858" stroke="#ff5b5b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </span>
+            <input type="text" id="searchName" placeholder="Search by name...">
+        </div>
         <table>
             <thead>
             <tr>
@@ -226,7 +242,7 @@ $result = $stmt->get_result();
                 <th>Selected Time</th>
                 <th>Stylist</th>
                 <th>Selected Service</th>
-                <th>Username</th>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Gender</th>
@@ -241,7 +257,7 @@ $result = $stmt->get_result();
                     $id = htmlspecialchars($row["id"]);
                     $selected_date = htmlspecialchars($row["selected_date"]);
                     $raw_time = $row["selected_time"];
-                    $selected_time = date("h:i A", strtotime($raw_time));
+                    $selected_time = date("g:i A", strtotime($raw_time));
                     $stylist = htmlspecialchars($row["stylist"]);
                     $selected_service = htmlspecialchars($row["selected_service"]);
                     $username = htmlspecialchars($row["username"]);
@@ -271,7 +287,7 @@ $result = $stmt->get_result();
                     
                     echo "<td>
                       <span class='action-buttons'>
-                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$raw_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a>
+                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a>
                         <span class='action-sep'>|</span>
                         <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
                       </span>
@@ -302,7 +318,9 @@ $result = $stmt->get_result();
                 <p><label>Selected Time:</label><br>
                     <select name="edit_selected_time" id="edit_selected_time">
                         <?php foreach ($available_times as $time): ?>
-                            <option value="<?php echo htmlspecialchars($time); ?>"><?php echo htmlspecialchars($time); ?></option>
+                            <option value="<?php echo htmlspecialchars(date("g:i A", strtotime($time))); ?>">
+                                <?php echo date("g:i A", strtotime($time)); ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </p>
@@ -406,9 +424,13 @@ function openEditModal(id, selected_date, selected_time, stylist, selected_servi
 
     // Set the selected value for the time dropdown
     const timeDropdown = document.getElementById('edit_selected_time');
+    console.log('selected_time:', selected_time);
+    function normalizeTime(str) {
+        return str.replace(/:00(\s|$)/, '').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
     for (let i = 0; i < timeDropdown.options.length; i++) {
         if (
-            timeDropdown.options[i].value.trim().toLowerCase() === selected_time.trim().toLowerCase()
+            normalizeTime(timeDropdown.options[i].value) === normalizeTime(selected_time)
         ) {
             timeDropdown.selectedIndex = i;
             break;
@@ -524,6 +546,40 @@ function validateForm() {
     return isValid; // Return true if both validations pass
 }
 
+function updateStatusBasedOnTime() {
+    const dateInput = document.getElementById('edit_selected_date');
+    const timeSelect = document.getElementById('edit_selected_time');
+    const statusSelect = document.getElementById('edit_status');
+
+    if (!dateInput || !timeSelect || !statusSelect) return;
+
+    const selectedDate = dateInput.value;
+    const selectedTime = timeSelect.value;
+
+    if (!selectedDate || !selectedTime) return;
+
+    // Combine date and time into a Date object
+    const selectedDateTime = new Date(selectedDate + 'T' + selectedTime);
+    // Add 15 minutes grace period
+    selectedDateTime.setMinutes(selectedDateTime.getMinutes() + 15);
+
+    const now = new Date();
+
+    // If the appointment (with grace period) is still in the future, set status to Scheduled
+    if (selectedDateTime > now) {
+        statusSelect.value = "Scheduled";
+    }
+}
+
+// Listen for changes on date and time fields
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.getElementById('edit_selected_date');
+    const timeSelect = document.getElementById('edit_selected_time');
+
+    if (dateInput) dateInput.addEventListener('change', updateStatusBasedOnTime);
+    if (timeSelect) timeSelect.addEventListener('change', updateStatusBasedOnTime);
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     var logoutBtn = document.getElementById('logoutBtn');
     var logoutModal = document.getElementById('logoutModal');
@@ -571,6 +627,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+document.getElementById('searchName').addEventListener('input', function() {
+    const filter = this.value.toLowerCase();
+    const table = document.querySelector('.table-container table');
+    const trs = table.querySelectorAll('tbody tr');
+    // Name is the 5th column (index 4, since index starts at 0)
+    trs.forEach(tr => {
+        const nameCell = tr.children[4];
+        if (nameCell && nameCell.textContent.toLowerCase().includes(filter)) {
+            tr.style.display = '';
+        } else {
+            tr.style.display = 'none';
+        }
+    });
+});
 </script>
 <!-- Logout Modal Markup -->
     <div id="logoutModal" class="modal">
@@ -586,3 +657,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </body>
 </html>
+``` 
