@@ -17,14 +17,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 20px auto;      /* Match the table-container margin */
-  width: 98% !important;             /* Match the table-container width */
+  margin: 20px auto; /* Match the table-container margin */
+  width: 98% !important; /* Match the table-container width */
   border-radius: 8px;
   flex-wrap: wrap;
   box-sizing: border-box; /* Ensure padding is included in width */
   color: #ff5b5b;
   /*-webkit-text-stroke: 0.2px black;*/
-  padding: 20px;          /* Keep padding for spacing inside */
+  padding: 20px; /* Keep padding for spacing inside */
 }
 
 .header-wrapper h2 {
@@ -217,7 +217,7 @@ td:nth-child(10) {
 
 th:nth-child(11),
 td:nth-child(11) {
-  min-width: 150px;   /* Adjust as needed */
+  min-width: 150px; /* Adjust as needed */
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -296,7 +296,7 @@ td:nth-child(11) {
   color: #fff;
   border-left: 5px solid #fff;
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(255,91,91,0.15); /* Optional: subtle shadow */
+  box-shadow: 0 2px 8px rgba(255, 91, 91, 0.15); /* Optional: subtle shadow */
   transition: background 0.2s;
 }
 
@@ -500,10 +500,11 @@ h3 {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-  z-index: 1000;
+  z-index: 2000; /* Make sure it's above .container */
+  pointer-events: auto;
   overflow: auto;
 }
 
@@ -518,6 +519,7 @@ h3 {
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  pointer-events: auto;
 }
 
 /* Close button styling */
@@ -565,84 +567,6 @@ h3 {
   color: #333;
 }
 
-/* Blur effect for background container when modal is active */
-.blur {
-  filter: blur(4px);
-}
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-  z-index: 1000;
-  overflow: auto;
-}
-
-/* Modal content container */
-.modal-content {
-  position: relative;
-  width: 90%;
-  max-width: 400px;
-  margin: 15% auto;
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-/* Close button styling */
-.modal-content .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-}
-
-/* Heading style */
-.modal-content h3 {
-  margin-top: 0;
-  color: #f35b53;
-}
-
-/* Paragraph style */
-.modal-content p {
-  font-size: 16px;
-  margin: 15px 0;
-}
-
-/* Form button styling */
-.modal-content button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-/* Logout (confirm) button */
-.modal-content button[type="submit"] {
-  background-color: #f35b53;
-  color: #fff;
-}
-
-/* Cancel button */
-.modal-content button.cancel-btn {
-  background-color: #ccc;
-  color: #333;
-}
-
-/* Blur effect for background container when modal is active */
-.blur {
-  filter: blur(4px);
-}
 .search-wrapper {
   display: flex;
   align-items: center;
@@ -669,11 +593,11 @@ h3 {
   transition: box-shadow 0.2s, border-color 0.2s;
   background: #fff;
   color: #333;
-  box-shadow: 0 0 0 0 rgba(255,91,91,0.5);
+  box-shadow: 0 0 0 0 rgba(255, 91, 91, 0.5);
 }
 
 #searchName:focus {
   border-color: #ff5b5b;
-  box-shadow: 0 0 8px 2px rgba(255,91,91,0.25), 0 0 0 2px #ff5b5b33;
+  box-shadow: 0 0 8px 2px rgba(255, 91, 91, 0.25), 0 0 0 2px #ff5b5b33;
   background: #fff8f8;
 }

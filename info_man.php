@@ -16,7 +16,7 @@ $conn = new mysqli("localhost", "root", "", "armansalon");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}
+}   
 
 // Fetch hairstylists and services options
 $stylistQuery = "SELECT option_value FROM options WHERE option_type = 'hairstylists'";
@@ -225,82 +225,82 @@ $result = $stmt->get_result();
         </div>
 
         <div class="table-container">
-        <div class="search-wrapper">
-            <span class="search-icon">
-                <!-- You can use an SVG for crisp icon -->
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                    <circle cx="9" cy="9" r="7" stroke="#ff5b5b" stroke-width="2"/>
-                    <line x1="14.4142" y1="14" x2="18" y2="17.5858" stroke="#ff5b5b" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </span>
-            <input type="text" id="searchName" placeholder="Search by name...">
-        </div>
-        <table>
-            <thead>
-            <tr>
-                <th>Selected Date</th>
-                <th>Selected Time</th>
-                <th>Stylist</th>
-                <th>Selected Service</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Gender</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $id = htmlspecialchars($row["id"]);
-                    $selected_date = htmlspecialchars($row["selected_date"]);
-                    $raw_time = $row["selected_time"];
-                    $selected_time = date("g:i A", strtotime($raw_time));
-                    $stylist = htmlspecialchars($row["stylist"]);
-                    $selected_service = htmlspecialchars($row["selected_service"]);
-                    $username = htmlspecialchars($row["username"]);
-                    $email = htmlspecialchars($row["email"]);
-                    $phoneNum = htmlspecialchars($row["phoneNum"]);
-                    $gender = htmlspecialchars($row["gender"]);
-                    $status = htmlspecialchars($row["status"]);
+            <div class="search-wrapper">
+                <span class="search-icon">
+                    <!-- You can use an SVG for crisp icon -->
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                        <circle cx="9" cy="9" r="7" stroke="#ff5b5b" stroke-width="2"/>
+                        <line x1="14.4142" y1="14" x2="18" y2="17.5858" stroke="#ff5b5b" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <input type="text" id="searchName" placeholder="Search by name...">
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Selected Date</th>
+                    <th>Selected Time</th>
+                    <th>Stylist</th>
+                    <th>Selected Service</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Gender</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $id = htmlspecialchars($row["id"]);
+                        $selected_date = htmlspecialchars($row["selected_date"]);
+                        $raw_time = $row["selected_time"];
+                        $selected_time = date("g:i A", strtotime($raw_time));
+                        $stylist = htmlspecialchars($row["stylist"]);
+                        $selected_service = htmlspecialchars($row["selected_service"]);
+                        $username = htmlspecialchars($row["username"]);
+                        $email = htmlspecialchars($row["email"]);
+                        $phoneNum = htmlspecialchars($row["phoneNum"]);
+                        $gender = htmlspecialchars($row["gender"]);
+                        $status = htmlspecialchars($row["status"]);
 
-                    echo "<tr>";
-                    echo "<td>$selected_date</td>";
-                    echo "<td>$selected_time</td>";
-                    echo "<td>$stylist</td>";
-                    echo "<td>$selected_service</td>";
-                    echo "<td>$username</td>";
-                    echo "<td>$email</td>";
-                    echo "<td>$phoneNum</td>";
-                    echo "<td>$gender</td>";
-                    if (strtolower($status) === 'in session') {
-                        echo "<td><span class='status-in-session'><span class='dot'></span>$status</span></td>";
-                    } elseif (strtolower($status) === 'completed') {
-                        echo "<td><span class='status-completed'>$status</span></td>";
-                    } elseif (strtolower($status) === 'cancelled') {
-                        echo "<td><span class='status-cancelled'>$status</span></td>";
-                    } else {
-                        echo "<td>$status</td>";
+                        echo "<tr>";
+                        echo "<td>$selected_date</td>";
+                        echo "<td>$selected_time</td>";
+                        echo "<td>$stylist</td>";
+                        echo "<td>$selected_service</td>";
+                        echo "<td>$username</td>";
+                        echo "<td>$email</td>";
+                        echo "<td>$phoneNum</td>";
+                        echo "<td>$gender</td>";
+                        if (strtolower($status) === 'in session') {
+                            echo "<td><span class='status-in-session'><span class='dot'></span>$status</span></td>";
+                        } elseif (strtolower($status) === 'completed') {
+                            echo "<td><span class='status-completed'>$status</span></td>";
+                        } elseif (strtolower($status) === 'cancelled') {
+                            echo "<td><span class='status-cancelled'>$status</span></td>";
+                        } else {
+                            echo "<td>$status</td>";
+                        }
+                        
+                        echo "<td>
+                        <span class='action-buttons'>
+                            <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a>
+                            <span class='action-sep'>|</span>
+                            <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
+                        </span>
+                        </td>";
+                        echo "</tr>";
                     }
-                    
-                    echo "<td>
-                      <span class='action-buttons'>
-                        <a href='#' class='edit-btn' onclick='openEditModal(\"$id\", \"$selected_date\", \"$selected_time\", \"$stylist\", \"$selected_service\", \"$username\", \"$email\", \"$phoneNum\", \"$gender\", \"$status\")'>Edit</a>
-                        <span class='action-sep'>|</span>
-                        <a href='" . $_SERVER['PHP_SELF'] . "?id=$id' class='delete-btn' onclick=\"return confirm('Are you sure you want to delete this record?')\">Delete</a>
-                      </span>
-                    </td>";
-                    echo "</tr>";
                 }
-            }
-            ?>
-            </tbody>
-        </table>
-        <div class="table-container">
+                ?>
+                </tbody>
+            </table>
+            <div class="table-container">
+        </div>
     </div>
-</div>
 </div>
 
 <!-- Modal Background -->
@@ -594,6 +594,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault(); // prevent default link behavior
             console.log("Logout button clicked");
             logoutModal.style.display = 'block';
+            document.querySelector('.container').classList.add('blur');
             if (container) {
                 container.classList.add('blur');
             }
@@ -604,6 +605,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function closeModal() {
         logoutModal.style.display = 'none';
+        document.querySelector('.container').classList.remove('blur');
         if (container) {
             container.classList.remove('blur');
         }
@@ -644,17 +646,17 @@ document.getElementById('searchName').addEventListener('input', function() {
 });
 </script>
 <!-- Logout Modal Markup -->
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Confirm Logout</h3>
-            <form method="POST" action="log_out.php">
-                <p>Are you sure you want to logout?</p>
-                <button type="submit" name="confirm_logout">Logout</button>
-                <button type="button" class="cancel-btn">Cancel</button>
-            </form>
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Confirm Logout</h3>
+        <form method="POST" action="log_out.php">
+            <p>Are you sure you want to logout?</p>
+            <button type="submit" name="confirm_logout">Logout</button>
+            <button type="button" class="cancel-btn">Cancel</button>
+        </form>
     </div>
 </div>
 </body>
 </html>
-``` 
+```
