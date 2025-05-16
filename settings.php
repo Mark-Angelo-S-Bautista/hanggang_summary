@@ -25,11 +25,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 
 // ----- Process Update Action -------
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'update') {
-    // Update an existing option
     $id = intval($_POST['id']);
     $new_value = trim($_POST['new_value']);
-    $stmt = $pdo->prepare("UPDATE options SET option_value = :new_value WHERE id = :id");
-    $stmt->execute([':new_value' => $new_value, ':id' => $id]);
+
+    // Check if this is a hairstylist and if a new image is uploaded
+    $option = $pdo->prepare("SELECT * FROM options WHERE id = :id");
+    $option->execute([':id' => $id]);
+    $row = $option->fetch(PDO::FETCH_ASSOC);
+
+    $updateImageSQL = '';
+    $params = [':new_value' => $new_value, ':id' => $id];
+
+    if ($row && $row['option_type'] === 'hairstylists' && isset($_FILES['stylist_image']) && $_FILES['stylist_image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'img/';
+        $imageFileName = uniqid('stylist_') . '_' . basename($_FILES['stylist_image']['name']);
+        $uploadFile = $uploadDir . $imageFileName;
+        move_uploaded_file($_FILES['stylist_image']['tmp_name'], $uploadFile);
+        $updateImageSQL = ', image = :image';
+        $params[':image'] = $imageFileName;
+    }
+
+    $stmt = $pdo->prepare("UPDATE options SET option_value = :new_value $updateImageSQL WHERE id = :id");
+    $stmt->execute($params);
     $message = "Option updated successfully.";
 }
 
@@ -37,9 +54,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
     $option_type = $_POST['option_type'];
     $new_value = trim($_POST['new_value']);
+    $imageFileName = null;
+
+    if ($option_type === 'hairstylists' && isset($_FILES['stylist_image']) && $_FILES['stylist_image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'img/';
+        $imageFileName = uniqid('stylist_') . '_' . basename($_FILES['stylist_image']['name']);
+        $uploadFile = $uploadDir . $imageFileName;
+        move_uploaded_file($_FILES['stylist_image']['tmp_name'], $uploadFile);
+    }
+
     if (!empty($new_value)) {
-        $stmt = $pdo->prepare("INSERT INTO options (option_type, option_value) VALUES (:option_type, :new_value)");
-        $stmt->execute([':option_type' => $option_type, ':new_value' => $new_value]);
+        if ($option_type === 'hairstylists') {
+            $stmt = $pdo->prepare("INSERT INTO options (option_type, option_value, image) VALUES (:option_type, :new_value, :image)");
+            $stmt->execute([':option_type' => $option_type, ':new_value' => $new_value, ':image' => $imageFileName]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO options (option_type, option_value) VALUES (:option_type, :new_value)");
+            $stmt->execute([':option_type' => $option_type, ':new_value' => $new_value]);
+        }
         $message = "New option added successfully.";
     } else {
         $message = "Please enter a value.";
@@ -216,6 +247,101 @@ $servicesOptions = getOptions($pdo, 'services');
         .settings_form_container th {
             position: static !important;
         }
+
+        .add-stylist-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .add-stylist-form .stylist-text {
+            width: 50% !important;
+        }
+
+        .add-stylist-form .custom-file-label {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            background-color: #f35b53;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            margin-right: 4px;
+            white-space: nowrap;
+        }
+
+        .add-stylist-form .custom-file-label:hover {
+            background-color: #e04848;
+        }
+
+        .add-stylist-form .stylist-file {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .add-stylist-form button {
+            padding: 5px 10px;
+            background-color: #f35b53;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .stylist-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .stylist-update-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stylist-img-label {
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .stylist-img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .stylist-img:hover {
+            box-shadow: 0 0 0 2px #f35b53;
+        }
+
+        .stylist-update-form .stylist-text {
+            height: 38px;
+            padding: 5px 8px;
+            font-size: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -252,6 +378,16 @@ $servicesOptions = getOptions($pdo, 'services');
                 }
             });
         });
+
+        function showFileName(input) {
+            var label = input.parentNode.parentNode.querySelector('#file-name-label');
+            if (input.files.length > 0) {
+                label.style.display = 'none';
+            } else {
+                label.style.display = 'block';
+                label.textContent = 'No file chosen';
+            }
+        }
     </script>
 </head>
 <body>
@@ -294,10 +430,10 @@ $servicesOptions = getOptions($pdo, 'services');
                                     <input type="hidden" name="action" value="update">
                                     <input type="hidden" name="id" value="<?php echo $option['id']; ?>">
                                     <input type="text" name="new_value" value="<?php echo htmlspecialchars($option['option_value']); ?>">
-                                    <button type="submit">Update</button>
-                                </form>
                             </td>
                             <td>
+                                    <button type="submit">Update</button>
+                                </form>
                                 <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this time?');">Delete</a>
                             </td>
                         </tr>
@@ -324,23 +460,30 @@ $servicesOptions = getOptions($pdo, 'services');
                         <tr>
                             <td><?php echo $option['id']; ?></td>
                             <td>
-                                <form method="POST" action="settings.php" class="inline_form">
+                                <form method="POST" action="settings.php" class="inline_form" id="stylist-form-<?php echo $option['id']; ?>">
                                     <input type="hidden" name="action" value="update">
                                     <input type="hidden" name="id" value="<?php echo $option['id']; ?>">
-                                    <input type="text" name="new_value" value="<?php echo htmlspecialchars($option['option_value']); ?>">
-                                    <button type="submit">Update</button>
+                                    <input type="text" name="new_value" value="<?php echo htmlspecialchars($option['option_value']); ?>" class="stylist-text">
                                 </form>
                             </td>
                             <td>
+                                <button type="submit" form="stylist-form-<?php echo $option['id']; ?>">Update</button>
                                 <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this hairstylist?');">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
                     </table>
-                    <form method="POST" action="settings.php">
+                    <form method="POST" action="settings.php" enctype="multipart/form-data" class="add-stylist-form">
                         <input type="hidden" name="action" value="add">
                         <input type="hidden" name="option_type" value="hairstylists">
-                        <input type="text" name="new_value" placeholder="Add new hairstylist">
+                        <input type="text" name="new_value" placeholder="Add new hairstylist" class="stylist-text">
+                        <div style="display: flex; flex-direction: column;">
+                            <label class="custom-file-label">
+                                <input type="file" name="stylist_image" accept="image/*" class="stylist-file" onchange="showFileName(this)">
+                                Choose Image
+                            </label>
+                            <div id="file-name-label" style="font-size:12px;color:#888; width:100%; text-align:center;">No file chosen</div>
+                        </div>
                         <button type="submit">Add Hairstylist</button>
                     </form>
                 </div>
@@ -362,10 +505,10 @@ $servicesOptions = getOptions($pdo, 'services');
                                     <input type="hidden" name="action" value="update">
                                     <input type="hidden" name="id" value="<?php echo $option['id']; ?>">
                                     <input type="text" name="new_value" value="<?php echo htmlspecialchars($option['option_value']); ?>">
-                                    <button type="submit">Update</button>
-                                </form>
                             </td>
                             <td>
+                                    <button type="submit">Update</button>
+                                </form>
                                 <a href="settings.php?action=delete&id=<?php echo $option['id']; ?>" class="delete-btn" onclick="return confirm('Delete this service?');">Delete</a>
                             </td>
                         </tr>

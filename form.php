@@ -22,6 +22,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $options[$row['option_type']][] = $value;
 }
 
+// Fetch stylists with images
+$stmt = $pdo->prepare("SELECT option_value, image FROM options WHERE option_type = 'hairstylists'");
+$stmt->execute();
+$stylists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Partition times into Morning and Afternoon based on "AM" and "PM"
 $morning = array_filter($options['times'], function($time) {
     return strpos($time, 'AM') !== false;
@@ -123,10 +128,10 @@ $afternoon = array_filter($options['times'], function($time) {
                 <div class="stylists">
                     <h3>Choose Hair Stylist</h3>
                     <input type="hidden" name="stylist" id="stylist">
-                    <?php foreach ($options['hairstylists'] as $stylist): ?>
+                    <?php foreach ($stylists as $stylist): ?>
                         <div class="stylist">
-                            <img src="img/stylist_default.png" alt="<?php echo htmlspecialchars($stylist); ?>" onclick="handleStylistClick(event); selectStylist('<?php echo addslashes(htmlspecialchars($stylist)); ?>')">
-                            <p><?php echo htmlspecialchars($stylist); ?></p>
+                            <img src="img/<?php echo htmlspecialchars($stylist['image'] ?: 'stylist1.png'); ?>" alt="<?php echo htmlspecialchars($stylist['option_value']); ?>" onclick="handleStylistClick(event); selectStylist('<?php echo addslashes(htmlspecialchars($stylist['option_value'])); ?>')">
+                            <p><?php echo htmlspecialchars($stylist['option_value']); ?></p>
                         </div>
                     <?php endforeach; ?>
                 </div>
