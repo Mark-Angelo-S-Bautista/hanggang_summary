@@ -659,4 +659,3 @@ document.getElementById('searchName').addEventListener('input', function() {
 </div>
 </body>
 </html>
-```
